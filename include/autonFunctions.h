@@ -3,7 +3,7 @@
 
 void inertialCalibration();
 void reset();
-int drivePID(int target);
+void drivePID(int target);
 void moveForward(void);
 
 #endif

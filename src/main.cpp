@@ -31,7 +31,7 @@ void pre_auton(void) {
 
 //auton goes in here
 void autonomous(void) {
-    
+    drivePID(400);
   }
 
 // User control code 
