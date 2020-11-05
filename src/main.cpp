@@ -31,21 +31,32 @@ void pre_auton(void) {
 
 //auton goes in here
 void autonomous(void) {
-    drivePID(400);
+    /*vex::task forward(drivePID);
+    resetDrive = true;
+    target = 100;
+    turnTarget = 0;
+
+ vex::task::sleep(100);
+
+    resetDrive = true;
+    target = 100;
+    turnTarget = 90;*/
+
   }
 
 // User control code 
 void usercontrol(void) {
-    
-  
+      //enableDrivePID = false;
   while (true) {
     task p = task(chassisMovement);
     task i = task(Intake);
-  }
+  
 
        wait(20, msec); // Sleep the task for a short amount of time to
                     // prevent wasted resources.
     }
+  
+}
   
   
 
