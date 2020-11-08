@@ -7,23 +7,8 @@
 using namespace vex;
 
 //bool YPressed = true;
-int lineSensor1Value = 0;
+  int lineSensor1Value = 0;
   int lineSensor2Value = 0;
-void autoGroup(){
-    LeftRoller.spin(fwd, 100, pct);
-    RightRoller.spin(fwd, 100, pct);
-    Conveyor1.spin(reverse, 100, pct);
-    Conveyor2.spin(reverse, 100, pct);
-    task::sleep(500);
-    if (lineSensor2Value < 70){
-      Conveyor1.spin(fwd, 100, pct);
-      Conveyor2.spin(fwd, 100, pct);
-    }
-    else{
-      Conveyor1.stop(coast);
-      Conveyor2.stop(coast);
-    }
-}
 
 //code for drive
 int chassisMovement(){
@@ -55,50 +40,88 @@ int chassisMovement(){
 }
   
   //all intake control functions
+void autoGroup(){
+    LeftRoller.spin(fwd, 100, pct);
+    RightRoller.spin(fwd, 100, pct);
+    Conveyor1.spin(reverse, 100, pct);
+    Conveyor2.spin(reverse, 100, pct);
+    task::sleep(500);
+    if (lineSensor2Value < 70){
+      Conveyor1.spin(fwd, 100, pct);
+      Conveyor2.spin(fwd, 100, pct);
+    }
+    else{
+      Conveyor1.stop(coast);
+      Conveyor2.stop(coast);
+    }
+}
+
   int Intake() {
   while (true) {
      lineSensor1Value = ballDetector1.value(pct);
      lineSensor2Value = ballDetector2.value(pct);
 
-      if (Controller1.ButtonR1.pressing() && Controller1.ButtonR2.pressing()) {
+      if (Controller1.ButtonL1.pressing() && Controller1.ButtonL2.pressing()) {
         LeftRoller.spin(fwd, 100, pct);
         RightRoller.spin(fwd, 100, pct);
-        Conveyor1.spin(fwd, 100, pct);
-        Conveyor2.spin(fwd, 100, pct);
-    }
-
-      else if (Controller1.ButtonL1.pressing() && Controller1.ButtonL2.pressing()) {
-        LeftRoller.spin(reverse, 100, pct);
-        RightRoller.spin(reverse, 100, pct);
         Conveyor1.spin(reverse, 100, pct);
         Conveyor2.spin(reverse, 100, pct);
+    }
+
+      else if (Controller1.ButtonR1.pressing() && Controller1.ButtonR2.pressing()) {
+        LeftRoller.spin(reverse, 100, pct);
+        RightRoller.spin(reverse, 100, pct);
+        Conveyor1.spin(fwd, 100, pct);
+        Conveyor2.spin(fwd, 100, pct);
     }
 
       else if (Controller1.ButtonL1.pressing()) {
         Conveyor1.spin(fwd, 100, pct);
         Conveyor2.spin(fwd, 100, pct);
     }
-
+ 
       else if (Controller1.ButtonL2.pressing()) {
         Conveyor1.spin(reverse, 100, pct);
         Conveyor2.spin(reverse, 100, pct);
     }
 
-      /*else if (lineSensor1Value <= 69){
-        Conveyor1.spin(fwd, 100, pct);
-        Conveyor2.spin(fwd, 100, pct);
-    }*/
+      else if(Controller1.ButtonB.pressing()){
+        lineSensor1Value = 59;
+        LeftRoller.spin(reverse, 100, pct);
+        RightRoller.spin(reverse, 100, pct);
+        Conveyor1.spin(reverse, 100, pct);
+        Conveyor2.spin(reverse, 100, pct);
+        
+    }
 
-      else if (Controller1.ButtonR2.pressing()) { 
+      else if(Controller1.ButtonRight.pressing()){
+        LeftRoller.spin(reverse, 100, pct);
+        RightRoller.spin(reverse, 100, pct);
+        Conveyor1.spin(fwd, 30, pct); 
+        Conveyor2.spin(fwd, 30, pct);
+        
+    }
+
+      else if (Controller1.ButtonR1.pressing()) { 
         LeftRoller.spin(reverse, 100, pct);
         RightRoller.spin(reverse, 100, pct);
     }
 
-      else if (Controller1.ButtonR1.pressing()) {
+      else if (lineSensor1Value <= 65){
+        Conveyor1.spin(fwd, 20, pct);
+        Conveyor2.spin(fwd, 20, pct);
+    }
+
+      else if (lineSensor2Value < 64){
+      Conveyor1.stop(coast);
+      Conveyor2.stop(coast);
+    }
+
+      else if (Controller1.ButtonR2.pressing()) {
         LeftRoller.spin(fwd, 100, pct);
         RightRoller.spin(fwd, 100, pct);
     }
-    
+  
       else {
         LeftRoller.stop(coast);
         RightRoller.stop(coast);

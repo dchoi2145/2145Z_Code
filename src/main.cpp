@@ -48,6 +48,8 @@ void autonomous(void) {
 void usercontrol(void) {
       //enableDrivePID = false;
   while (true) {
+    printLineValue1();
+    printLineValue2();
     task p = task(chassisMovement);
     task i = task(Intake);
   
