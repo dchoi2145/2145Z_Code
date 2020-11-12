@@ -21,81 +21,101 @@ void reset(){
   FR.resetRotation();
   inertial_gyro.resetRotation();
 }
-//Constants
-double kP=0.1;
-double kI=0;
-double kD=0;  
-double turnkP=0;
-double turnkI=0;
-double turnkD=0; 
+  
 
-int target = 10;
-int turnTarget = 0;
+  void gyroTurn (int target) {
+    double kP = .2;
+    double kI = 0;
+    double kD = 0;
+    int error = 0;
+    int totalError = 0;
+    int prevError = 0;
+    int derivative;
+    int acceptableErrorRange = 0;
+    
 
-int error; //avgVal - target = position
-int prevError = 0; //last known position that is updated every 20 ms
-int derivative; //error - prevError = speed
-int totalError = 0; //totalError = totalError + error
+     while(abs(target - inertial_gyro.rotation(degrees)) > acceptableErrorRange) {
+          inertial_gyro.resetRotation();
+          prevError = error;
+          
 
-int turnError; //avgVal - target = position
-int turnPrevError = 0; //last known position that is updated every 20 ms
-int turnDerivative; //error - prevError = speed
-int turnTotalError = 0; //totalError = totalError + error
+          //Proportional
+          error = target - inertial_gyro.rotation(degrees);
+          //Integral
+          totalError += error; 
+          //Derivative
+          derivative = error - prevError;
 
-bool resetDrive = false;
-
-bool enableDrivePID = true;
-
-int drivePID(){
-
-  while(enableDrivePID){
-
-  if (resetDrive){
-    resetDrive = false;
-    FL.setPosition(0,degrees);
-    BR.setPosition(0,degrees);
-    FR.setPosition(0,degrees);
-    BL.setPosition(0,degrees);
+          int motorPower = error * kP +  kD * derivative + kI * totalError;
+       if(inertial_gyro.rotation(degrees) < target){
+          FL.spin(fwd, motorPower, velocityUnits::pct);
+          FR.spin(fwd, -motorPower, velocityUnits::pct);
+          BL.spin(reverse, -motorPower, velocityUnits::pct);
+          BR.spin(reverse, motorPower, velocityUnits::pct);
+       }
+       else if(inertial_gyro.rotation(degrees) > target){
+          FL.spin(fwd,-motorPower, velocityUnits::pct);
+          FR.spin(fwd, motorPower, velocityUnits::pct);
+          BL.spin(reverse, motorPower, velocityUnits::pct);
+          BR.spin(reverse, -motorPower, velocityUnits::pct);
+       }
+       else{
+          FR.stop(hold);
+          FL.stop(hold);
+          BR.stop(hold);
+          BL.stop(hold);
+       }
+         
+     }
+          FR.stop(hold);
+          FL.stop(hold);
+          BR.stop(hold);
+          BL.stop(hold);
   }
+     void forwardPID (int target){
+      double kP = 0.1;
+      double kI = 0.1;
+      double kD = 0.2;
+      int error = 0;
+      int totalError = 0;
+      int prevError = 0;
+      int derivative;
 
-  int leftVal = BL.position(degrees);
-  int rightVal = BR.position(degrees);
-  int avgVal = (leftVal + rightVal)/2;
+      reset();
+      int leftVal = BL.position(degrees);
+      int rightVal = BR.position(degrees);
+      int avgVal = (abs(leftVal) + abs(rightVal))/2;
 
-  //Proportional
-  error = avgVal - target;
-  //Derivative
-  derivative = prevError - error;
-  //Integral
-  totalError += error;
+      while(target > avgVal){
+        leftVal = BL.position(degrees);
+        rightVal = BR.position(degrees);
+      
+        avgVal = (abs(leftVal) + abs(rightVal))/2;
+        //Proportional
+        error = target - avgVal;
 
-  double motorPower = error * kP + derivative * kD + totalError* kI;
+        //Integral
+        totalError += error;
 
-  //Turn
+        //Derivative
+        derivative = error-prevError;
 
-  int turnAvgVal = leftVal - rightVal;
+        int motorPower = (kP*error) + (kI*totalError) + (kD*derivative);
+        FL.spin(directionType::rev,motorPower,velocityUnits::pct);
+        BL.spin(directionType::rev,motorPower,velocityUnits::pct);
+        FR.spin(directionType::rev,motorPower,velocityUnits::pct);
+        BR.spin(directionType::rev,motorPower,velocityUnits::pct); 
 
-  //Proportional
-  turnError = turnAvgVal - turnTarget;
-  //Derivative
-  turnDerivative = turnError - turnPrevError;
-  //Integral
-  turnTotalError += turnError;
+         task::sleep(10);
+    }
 
-  double turnMotorPower = (turnError *turnkP + turnDerivative * turnkD + turnTotalError* turnkI);
+      FL.stop(coast);
+      FR.stop(coast);
+      BL.stop(coast);
+      BR.stop(coast);
 
+     }
 
-  FL.spin(fwd, motorPower + turnMotorPower, voltageUnits::volt);
-  BR.spin(fwd, motorPower - turnMotorPower, voltageUnits::volt);
-  FR.spin(fwd, motorPower + turnMotorPower, voltageUnits::volt);
-  BL.spin(fwd, motorPower - turnMotorPower, voltageUnits::volt);
+    
 
-
-  prevError = error;
-  turnPrevError = turnError;
-  vex::task::sleep(20);
-
-
-  }
-   return 1;
-}
+  

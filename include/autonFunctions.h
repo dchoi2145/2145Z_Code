@@ -3,7 +3,10 @@
 
 void inertialCalibration();
 void reset();
-void drivePID(int target);
+int iMovePid(int target);
+void forwardPID(int target);
+void backwardPID(int target);
 void moveForward(void);
-
+void gyroTurn(int target);
+void rightgyroturn(int h);
 #endif

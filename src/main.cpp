@@ -31,25 +31,18 @@ void pre_auton(void) {
 
 //auton goes in here
 void autonomous(void) {
-    /*vex::task forward(drivePID);
-    resetDrive = true;
-    target = 100;
-    turnTarget = 0;
-
- vex::task::sleep(100);
-
-    resetDrive = true;
-    target = 100;
-    turnTarget = 90;*/
-
+    forwardPID(1000);
+    //backwardPID(1000);
   }
 
 // User control code 
 void usercontrol(void) {
       //enableDrivePID = false;
   while (true) {
+    opticalLight();
     printLineValue1();
     printLineValue2();
+    printOptical();
     task p = task(chassisMovement);
     task i = task(Intake);
   

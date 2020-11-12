@@ -14,6 +14,8 @@ extern controller Controller1;
 extern inertial inertial_gyro;
 extern line ballDetector1;
 extern line ballDetector2;
+extern line ballDetector3;
+extern optical optical1;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.

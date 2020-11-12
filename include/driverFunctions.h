@@ -5,4 +5,6 @@ int chassisMovement();
 int Intake();
 void printLineValue1(void);
 void printLineValue2(void);
+void printOptical();
+void opticalLight();
 #endif
