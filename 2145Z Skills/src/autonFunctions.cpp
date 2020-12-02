@@ -131,14 +131,11 @@ int opticalHue1 = optical1.hue();
   }        
     //This function stops blue balls at the top of the conveyor for optimal priming position
     void ballStopBlue(int speed){
-      while  (lineSensorValue2 > 60 && lineSensorValue3 > 60 /*|| opticalHue1 < 100*/){
+      while (!(lineSensorValue2 <= 60 || lineSensorValue3 <= 60 || opticalHue1 > 100)){
         Conveyor1.spin(fwd, speed, pct);
         Conveyor2.spin(fwd, speed, pct);
         RightRoller.spin(reverse, speed, pct);
         LeftRoller.spin(reverse, speed, pct);
-        printLineValue1();
-        printLineValue2();
-        printOptical();
       } 
         Conveyor1.stop(hold);
         Conveyor2.stop(hold);
@@ -561,7 +558,6 @@ int opticalHue1 = optical1.hue();
       int totalError = 0;
       int prevError = 0;
       int derivative;
-      int limit = 0;
 
       //Resets the sensor values and then sets the current sensor values to the sensors
       reset();
@@ -570,25 +566,17 @@ int opticalHue1 = optical1.hue();
       while(target > abs(inetVal)){
         //Update sensor values
         inetVal = inertial_gyro.rotation(degrees);
-
-        //Update the limit
-        limit += 5;
         
         //Proportional
         error = target - inetVal;
 
-        //Integral
+        //Integral 
         totalError += error;
 
         //Derivative
         derivative = error-prevError;
 
         int motorPower = (kP*error) + (kI*totalError) + (kD*derivative);
-
-        //If the motorPower is larger then the limit, the motor power will equal the limit
-        if (limit < motorPower){
-          motorPower = limit;
-        }
 
         if (abs(motorPower) < 5){
           motorPower = 5;
@@ -608,7 +596,7 @@ int opticalHue1 = optical1.hue();
          task::sleep(10);
      }
     
-      //When the loop ends, the motors are set to brake for less uncertainty and then set the coast for drive control slowly
+      //When the loop ends, the motors are set to brake for less uncertainty and then set the coast for drive control
       setHold();
       setCoast();
       }

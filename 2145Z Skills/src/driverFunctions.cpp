@@ -21,7 +21,6 @@ int chassisMovement(){
       FL.spin(reverse, pow(Controller1.Axis3.value(), 4)/10000, pct);
       BL.spin(reverse, pow(Controller1.Axis3.value(), 4)/10000, pct);
     }
-    
     else{ 
       FL.spin(fwd, pow(Controller1.Axis3.value(), 4)/10000, pct);
       BL.spin(fwd, pow(Controller1.Axis3.value(), 4)/10000, pct);
@@ -65,13 +64,6 @@ int chassisMovement(){
         LeftRoller.spin(fwd, 100, pct);
         RightRoller.spin(fwd, 100, pct);
     }
-
-      else if (Controller1.ButtonY.pressing()) {
-        LeftRoller.spin(reverse, 100, pct);
-        RightRoller.spin(reverse, 100, pct);
-        Conveyor1.spin(fwd, 30, pct);
-        Conveyor2.spin(fwd, 30, pct);
-    }
  
       else if (Controller1.ButtonL2.pressing()) {
         Conveyor1.spin(fwd, 100, pct);
@@ -103,11 +95,6 @@ int chassisMovement(){
         RightRoller.spin(fwd, 100, pct);
     }
 
-      else if (lineSensor1Value <= 65){
-        Conveyor1.spin(fwd, 100, pct);
-        Conveyor2.spin(fwd, 100, pct);
-    }
-
       else if (lineSensor2Value <= 60 || lineSensor3Value <= 60 || optical1Hue < 40 || optical1Hue > 100){
         Conveyor1.stop(hold);
         Conveyor2.stop(hold);
@@ -121,14 +108,25 @@ int chassisMovement(){
       else if(Controller1.ButtonRight.pressing()){
         Conveyor1.spin(reverse, 100, pct);
         Conveyor2.spin(reverse, 100, pct);
-    }
+    } 
       else if(Controller1.ButtonLeft.pressing()){
         RightRoller.spin(reverse, 100, pct);
         LeftRoller.spin(reverse, 100, pct);
         Conveyor1.spin(reverse, 100, pct);
         Conveyor2.spin(reverse, 100, pct);
-
       }
+
+      else if(optical1Hue >100){
+        Conveyor1.stop(hold);
+        Conveyor2.stop(hold);
+      }
+
+      else if (Controller1.ButtonY.pressing()) {
+        LeftRoller.spin(reverse, 100, pct);
+        RightRoller.spin(reverse, 100, pct);
+        Conveyor1.spin(fwd, 30, pct);
+        Conveyor2.spin(fwd, 30, pct);
+    }
     
       else {
         LeftRoller.spin(fwd, 0, pct);

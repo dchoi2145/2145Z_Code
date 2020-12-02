@@ -33,9 +33,9 @@ void pre_auton(void) {
 //auton goes in here
 void autonomous(void) { 
     //Red Right Side Home row
-    flipOut();
+    /*flipOut();
     task::sleep(100);
-    forwardPID(760); 
+    forwardPID(760);
     conveyorSpeed(0);
     task::sleep(200);
     rightPID(62);
@@ -50,49 +50,16 @@ void autonomous(void) {
     allSpin(100);
     task::sleep(400);
     allSpin(0);
-    rightPID(118);
+    rightPID(115);
     task::sleep(200);
     backwardTime(50);
-    task::sleep(1100);
+    task::sleep(900);
     backwardTime(0);
-    task::sleep(500);
+    task::sleep(200);
     forwardPID(2180);
-    leftPID(25);
+    leftPID(21);
     task::sleep(200);
-    forwardTime(50);
-    allSpin(100);
-    task::sleep(2000);
-    forwardTime(0);
-    allSpin(0);
-
-    //Blue Left SideHome Row 
-    /*flipOut();
-    task::sleep(100);
-    forwardPID(760); 
-    conveyorSpeed(0);
-    task::sleep(200);
-    leftPID(62);
-    allSpin(100);
-    task::sleep(200); 
     forwardTime(30);
-    task::sleep(1000); 
-    forwardTime(0);
-    task::sleep(1000);
-    allSpin(0);
-    backwardPID(400);
-    allSpin(100);
-    task::sleep(400);
-    allSpin(0);
-    leftPID(118);
-    task::sleep(200);
-    backwardTime(50);
-    task::sleep(1100);
-    backwardTime(0);
-    task::sleep(500);
-    forwardPID(2180);
-    rightPID(25);
-    task::sleep(200);
-    forwardTime(50);
     allSpin(100);
     task::sleep(2000);
     forwardTime(0);
@@ -127,87 +94,39 @@ void autonomous(void) {
     task::sleep(2000);
     allSpin(0);*/
 
-    //Blue Left Side 3 ball
-    /*task::sleep(100);
-    forwardPID(760); 
-    conveyorSpeed(0);
-    task::sleep(200);
-    leftPID(62);
-    allSpin(100);
-    task::sleep(200); 
-    forwardTime(30);
-    task::sleep(1000); 
-    forwardTime(0);
-    task::sleep(1000);
-    allSpin(0);
-    backwardPID(730);
-    allSpin(100);
-    task::sleep(400);
-    allSpin(0);
-    rightPID(38);
-    task::sleep(500);
-    forwardPID(700);
-    task::sleep(200);
-    forwardTime(20); 
-    task::sleep(800);
-    allSpin(100);
-    forwardTime(0);  
-    task::sleep(2000);
-    allSpin(0);*/
-
     //Skills Red Right Side
     /*flipOut();
     task::sleep(100);
-    forwardPID(760); 
-    conveyorSpeed(0);
-    task::sleep(200);
-    rightPID(62);
     allSpin(100);
+    forwardPID(800); 
+    task::sleep(200);
+    rightPID(60);
+    allSpin(0);
     task::sleep(200); 
-    forwardTime(30);
+    forwardPID(340);
+    conveyorSpeed(100);
     task::sleep(1000); 
-    forwardTime(0);
-    task::sleep(1000);
-    allSpin(0);
-    backwardPID(320);
-    allSpin(100);
+    conveyorSpeed(0);
+    backwardPID(730);
     task::sleep(400);
-    allSpin(0);
-    rightPID(117);
-    task::sleep(200);
-    backwardTime(50);
-    task::sleep(1100);
-    backwardTime(0);
+    leftPID(45);
     task::sleep(500);
-    forwardPID(2340);
-    task::sleep(200);
-    leftPID(25);
-    task::sleep(200);
-    forwardTime(40);
-    allSpin(100);
-    task::sleep(2000);
-    forwardTime(0);
-    allSpin(0);
-    backwardPID(360);
-    rightPID(115);
-    task::sleep(200);
-    backwardTime(40);
-    task::sleep(1000);
     rollerSpeed(100);
-    forwardPID(1200);
-    task::sleep(500);
-    leftPID(32);
-    rollerSpeed(0);
-    task::sleep(500);
-    forwardSlowPID(110);
-    allSpin(100);
-    task::sleep(800);
-    allSpin(0);*/
-  
-
-    
-
-    
+    forwardPID(700);
+    task::sleep(200);
+    rightSlowPID(51);
+    task::sleep(200);
+    forwardSlowPID(100);
+    allSpin(100); 
+    task::sleep(1000);
+    backwardSlowPID(260);
+    task::sleep(300);
+    leftSlowPID(34);
+    task::sleep(300);
+    rollerSpeed(100);
+    forwardPID(1300);
+    rollerSpeed(0);*/
+    moveForward(10,30);
 
 
 
