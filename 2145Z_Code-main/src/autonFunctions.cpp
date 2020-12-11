@@ -251,7 +251,7 @@ int opticalHue1 = optical1.hue();
         BL.spin(directionType::rev,110*(motorPower -  inetVal * kPAngle),voltageUnits::mV);
         FR.spin(directionType::rev,110*(motorPower +  inetVal * kPAngle),voltageUnits::mV);
         BR.spin(directionType::rev,110*(motorPower +  inetVal * kPAngle),voltageUnits::mV); 
-
+ 
   
         prevError = error;
 
