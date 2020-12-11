@@ -15,7 +15,7 @@ motor Conveyor1 = motor(PORT19, ratio6_1, true);
 motor Conveyor2 = motor(PORT16, ratio6_1, false);
 controller Controller1 = controller(primary);
 
-//sensors
+//sensors 
 inertial inertial_gyro = inertial(PORT9);
 line ballDetector1 = line(Brain.ThreeWirePort.B);
 line ballDetector2 = line(Brain.ThreeWirePort.C);
