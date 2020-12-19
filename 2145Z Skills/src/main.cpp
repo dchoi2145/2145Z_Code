@@ -35,6 +35,8 @@ void autonomous(void) {
  
     //Skills
     flipOut();
+    task::sleep(1000);
+    reset();
     //first goal
     flipOut();
     rollerSpeed(100);
@@ -117,7 +119,7 @@ void autonomous(void) {
     //sixth goal
     rollerSpeed(100);
     task::sleep(200);
-    leftPID(51);
+    leftPID(51); 
     task::sleep(200); 
     forwardPID(1000);
     task::sleep(200);
