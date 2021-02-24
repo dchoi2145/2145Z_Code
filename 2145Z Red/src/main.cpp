@@ -7,8 +7,6 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-
-
 #include "vex.h"
 
 #include "autonFunctions.h"
@@ -17,60 +15,51 @@
 
 using namespace vex;
 
-
 competition Competition;
-
 
 // Initializing Robot Configuration
 void pre_auton(void) {
-  
+
   vexcodeInit();
   inertialCalibration();
-  opticalLight(); 
+  opticalLight();
 }
-
  
-//auton goes in here
-void autonomous(void) { 
-    //Red Right Side Home row
-    flipOut();
-    forwardPID(800); 
-    conveyorSpeed(0);
-    task::sleep(200);
-    rightPID(60);
-    task::sleep(300); 
-    allSpin(100); 
-    forwardPID(300);
-    task::sleep(200); 
-    allSpin(0); 
-    backwardPID(300);
-    task::sleep(400);
-    allSpin(100); 
-    rightPID(115);
-    task::sleep(800);
-    allSpin(0);
-    backwardTime(50);
-    task::sleep(600);
-    backwardTime(0);
-    task::sleep(400);
-    forwardPID(2300);
-    task::sleep(100);
-    leftSlow(22);
-    task::sleep(100);
-    rollerSpeed(100);
-    forwardTime(60);
-    task::sleep(700);
-    forwardTime(5);
-    goalScore(60);
-    task::sleep(100);
-    backwardPID(300);
+// auton goes in here
+void autonomous(void) {
+    
+  rollerSpeed(100);
+  task::sleep(300);
+  forwardPID(1590);
+  task::sleep(200);
+  leftPID(61, 3,.7);
+  forwardPID(500);
+  allSpin(100);
+  task::sleep(900);
+  reset();
+  backwardPID(700);
+  leftPID(136.8,5,.5);
+  allSpin(0);
+  task::sleep(200);
+  forwardPID(3400);
+  rightPID(45,5,1);
+  task::sleep(200);
+  rollerSpeed(100);
+  forwardPID(750);
+  forwardSpeed(30);
+  task::sleep(500);
+  goalScore(100,2);
+  backwardPID(1000);
+  setCoast();
 
-  }
+  
+  
+ }
 
-// User control code 
+// User control code
 void usercontrol(void) {
-    task p = task(chassisMovement);
-    task i = task(Intake);
+  task p = task(chassisMovement);
+  task i = task(Intake);
   while (true) {
     opticalLight();
     printLineValue1();
@@ -78,15 +67,12 @@ void usercontrol(void) {
     printOptical();
     printInet();
     
-  
+   
 
-       wait(20, msec); // Sleep the task for a short amount of time to
+    wait(20, msec); // Sleep the task for a short amount of time to
                     // prevent wasted resources.
-    }
-  
+  }
 }
-  
-  
 
 //
 // Main will set up the competition functions and callbacks.

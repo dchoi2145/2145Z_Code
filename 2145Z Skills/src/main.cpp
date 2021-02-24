@@ -7,8 +7,6 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-
-
 #include "vex.h"
 
 #include "autonFunctions.h"
@@ -17,183 +15,139 @@
 
 using namespace vex;
 
-
 competition Competition;
-
 
 // Initializing Robot Configuration
 void pre_auton(void) {
-  
+
   vexcodeInit();
   inertialCalibration();
-  opticalLight(); 
+  opticalLight();
 }
 
- 
-//auton goes in here
-void autonomous(void) { 
- 
-    //Skills
-    flipOut();
-    task::sleep(1000);
-    reset();
-    //first goal
-    flipOut();
-    rollerSpeed(100);
-    forwardPID(800); 
-    task::sleep(200);
-    leftPID(29);
-    task::sleep(500); 
-    allSpin(100); 
-    forwardPID(300);
-    task::sleep(100); 
-    allSpin(0);
-    backwardPID(250);
-    task::sleep(400);
-    allSpin(100);  
-    task::sleep(300);
-    leftPID(85);
-    task::sleep(700);
-    allSpin(0);
-    //second goal
-    backwardTime(40);
-    task::sleep(1000);
-    backwardTime(0);
-    task::sleep(300);
-    rollerSpeed(100);
-    forwardPID(2260);
-    task::sleep(300);
-    rightSlow(26);
-    task::sleep(100);
-    allSpin(100);
-    forwardPID(320);
-    task::sleep(200);
-    allSpin(0);
-    backwardPID(230);
-    allSpin(100);
-    task::sleep(300);
-    allSpin(0);
-    //third goal
-    leftPID(78);
-    task::sleep(700);
-    backwardTime(40);
-    task::sleep(1000);
-    backwardTime(0);
-    task::sleep(300);
-    rollerSpeed(100);
-    forwardPID(1300);
-    task::sleep(200);
-    rightPID(78);
-    task::sleep(100); 
-    allSpin(100);
-    task::sleep(900);
-    //fourth goal
-    leftPID(107);
-    task::sleep(300);
-    rollerSpeed(100);
-    forwardPID(400);
-    task::sleep(200);
-    rightPID(100);
-    task::sleep(300);
-    forwardPID(1210);
-    task::sleep(200);
-    allSpin(100);
-    task::sleep(600);
-    backwardPID(100);
-    task::sleep(200);
-    //fifth goal
-    leftPID(90);
-    task::sleep(200);
-    backwardTime(30);
-    task::sleep(800);
-    backwardTime(0);
-    task::sleep(300);
-    rollerSpeed(100);
-    forwardPID(1400);
-    task::sleep(200);
-    rightPID(90);
-    task::sleep(200);
-    allSpin(100);
-    task::sleep(900);
-    allSpin(0);
-    //sixth goal
-    rollerSpeed(100);
-    task::sleep(200);
-    leftPID(51); 
-    task::sleep(200); 
-    forwardPID(1000);
-    task::sleep(200);
-    rightPID(36);
-    task::sleep(200);
-    forwardPID(200); 
-    allSpin(100);
-    task::sleep(500);
-    allSpin(0);
-    //seventh goal
-    backwardPID(200);
-    leftPID(77);
-    task::sleep(1000);
-    backwardTime(30);
-    task::sleep(1200);
-    backwardTime(0);
-    task::sleep(400);
-    rollerSpeed(100);
-    forwardPID(1300);
-    task::sleep(200);
-    rightPID(80);
-    allSpin(100);
-    task::sleep(900);
-    allSpin(0);
-    //eigth goal
-    backwardPID(100);
-    task::sleep(200);
-    leftPID(120);
-    task::sleep(200);
-    rollerSpeed(100);
-    forwardPID(550);
-    task::sleep(200);
-    allSpin(100);
-    task::sleep(200);
-    allSpin(0);
-    leftSlow(5);
-    task::sleep(100); 
-    rollerSpeed(-100);
-    forwardTime(100);
-    task::sleep(500);
-    backwardTime(100);
-    task::sleep(200);
-    forwardTime(100);
-    task::sleep(500);
-    forwardTime(0);
-    conveyorSpeed(50);
-    task::sleep(2000);
-    conveyorSpeed(0);
+// auton goes in here
+void autonomous(void) {
+  // Red Right Side Home row
+  // 1st&2nd 
+  rollerSpeed(100);
+  task::sleep(300);
+  forwardPID(1550);
+  leftPID(64, 1, 2);
+  task::sleep(100);
+  forwardPID(630);
+  forwardSpeed(10);
+  task::sleep(200);
+  ballCheckMid(100, 2);
+  forwardSpeed(0);
+  task::sleep(200);
+  // 3rd
+  backwardPID(500); 
+  allSpin(100);
+  leftPID(135, 3, 1);
+  task::sleep(200);
+  backwardTime(60, 800);
+  task::sleep(500);
+  conveyorSpeed(0);
+  rollerSpeed(100);
+  forwardPID(4600);
+  rightPID(45, 3, 1);
+  forwardPID(520);
+  forwardSpeed(10);
+  task::sleep(200);
+  ballCheckMid(100, 2);
+  forwardSpeed(0);
+  // 4th
+  task::sleep(300);
+  backwardPID(530);
+  rightPID(90,3,1);
+  allSpin(-100);
+  task::sleep(400);
+  rightPID(132,3,2);
+  task::sleep(200);
+  backwardTime(60, 700);
+  rollerSpeed(100);
+  forwardPID(2650);
+  rightPID(90, 3, 1);
+  allSpin(100);
+  task::sleep(1000);
+  allSpin(0);
+  // 5th
+  leftPID(103, 5, 0.5);
+  rollerSpeed(100);
+  forwardPID(1700);
+  rightPID(60, 5, 0.5);
+  forwardPID(1100);
+  forwardSpeed(10);
+  task::sleep(200);
+  ballCheckMid(100, 2);
+  forwardSpeed(0);
+  // 6th
+  task::sleep(200);
+  allSpin(-100);
+  backwardPID(2000);
+  leftPID(133, 5, 1.3);//fix
+  rollerSpeed(100);
+  forwardPID(800);
+  rightPID(85, 5, 0.5);
+  forwardPID(980);
+  allSpin(100); 
+  task::sleep(800);
+  allSpin(0);
+  // 7th
+  leftPID(81, 3, 1);
+  rollerSpeed(100);
+  forwardPID(2050);
+  rightPID(47, 3, 1);
+  forwardPID(500);
+  forwardSpeed(10);
+  task::sleep(200);
+  ballCheckMid(100, 2);
+  // 8th
+  backwardPID(600); 
+  rightPID(90, 3, 2);
+  allSpin(-100);
+  task::sleep(400);
+  rightPID(132, 3, 2);
+  task::sleep(200);
+  backwardTime(60, 1000);
+  rollerSpeed(100);
+  forwardPID(2610);
+  rightPID(90, 3, 1);
+  allSpin(100);
+  task::sleep(800);
+  allSpin(0);
+  // 9th
+  rightPID(177, 3, 0.5);
+  rollerSpeed(60);
+  forwardPID(1000);
+  forwardTime(35,1000);
+  ballCheckMid(45, 4);
+  backwardPID(1000);
+  
+  
 
-    
+  
+  
 
-  }
+ }
 
-// User control code 
+// User control code
 void usercontrol(void) {
-  flipOut();
-    task p = task(chassisMovement);
-    task i = task(Intake);
+  task p = task(chassisMovement);
+  task i = task(Intake);
   while (true) {
     opticalLight();
     printLineValue1();
     printLineValue2();
     printOptical();
     printInet();
-    
-  
+    printTracker();
+   
 
-       wait(20, msec); // Sleep the task for a short amount of time to
+    wait(20, msec); // Sleep the task for a short amount of time to
                     // prevent wasted resources.
-    }
-  
+  }
 }
-  
-  
 
 //
 // Main will set up the competition functions and callbacks.

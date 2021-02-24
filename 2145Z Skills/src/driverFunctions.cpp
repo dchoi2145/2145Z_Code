@@ -14,12 +14,11 @@ using namespace vex;
 
 //code for drive
 int chassisMovement(){
-
   while(true) {
 
     //driving left side quadtratically 
-    if(Controller1.Axis3.value()>0){
-      FL.spin(reverse, pow(Controller1.Axis3.value(), 2)/100, pct);
+    if(Controller1.Axis3.value()>0){ 
+      FL.spin(reverse, pow(Controller1.Axis3.value(), 2)/100, pct);//140
       BL.spin(reverse, pow(Controller1.Axis3.value(), 2)/100, pct);
     }
     else{ 
@@ -34,7 +33,7 @@ int chassisMovement(){
     }
     else{
       FR.spin(fwd, pow(Controller1.Axis2.value(), 2)/100, pct);
-      BR.spin(fwd, pow(Controller1.Axis2.value(), 2)/100, pct);
+      BR.spin(fwd, pow(Controller1.Axis2.value(), 2)/100, pct);//140
     }
     
     task::sleep(10);
@@ -108,19 +107,9 @@ int chassisMovement(){
         Conveyor2.spin(fwd, 100, pct);
     }*/
 
-      else if (lineSensor2Value <= 60 || lineSensor3Value <= 60 || optical1Hue < 40 || optical1Hue > 100){
-        Conveyor1.stop(hold);
-        Conveyor2.stop(hold);
-      }
-  
-      else if(Controller1.ButtonL1.pressing()){
-        Conveyor1.spin(fwd, 40, pct);
-        Conveyor2.spin(fwd, 40, pct);
-    }
-
       else if(Controller1.ButtonRight.pressing()){
-        Conveyor1.spin(reverse, 100, pct);
-        Conveyor2.spin(reverse, 100, pct);
+        Conveyor1.spin(reverse, 30, pct);
+        Conveyor2.spin(reverse, 30, pct);
     }
       else if(Controller1.ButtonLeft.pressing()){
         RightRoller.spin(reverse, 100, pct);
@@ -129,6 +118,16 @@ int chassisMovement(){
         Conveyor2.spin(reverse, 100, pct);
 
       }
+
+      else if (lineSensor2Value <= 67 || lineSensor3Value <= 67){
+        Conveyor1.stop(hold);
+        Conveyor2.stop(hold);
+      }
+  
+      else if(Controller1.ButtonL1.pressing()){
+        Conveyor1.spin(fwd, 50, pct);
+        Conveyor2.spin(fwd, 50, pct);
+    }
     
       else {
         LeftRoller.spin(fwd, 0, pct);
@@ -161,7 +160,7 @@ int chassisMovement(){
 
    }
 
-   void printOptical(){
+   void printOptical(){ 
       Brain.Screen.setCursor(3,1);
       Brain.Screen.print("Optical:");
       Brain.Screen.setCursor(3,14);
@@ -176,7 +175,8 @@ int chassisMovement(){
       Brain.Screen.setCursor(4,1);
       Brain.Screen.print("Inertial:");
       Brain.Screen.setCursor(4,14);
-      Brain.Screen.print(inertial_gyro.rotation(degrees) - .25);
+      Brain.Screen.print(inertial_gyro.rotation(degrees));
    }
+   
    
     
