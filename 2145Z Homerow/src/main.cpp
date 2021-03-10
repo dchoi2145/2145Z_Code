@@ -59,6 +59,7 @@ void autonomous(void) {
 
 // User control code
 void usercontrol(void) {
+  setCoast();
   task p = task(chassisMovement);
   task i = task(Intake);
   while (true) {
