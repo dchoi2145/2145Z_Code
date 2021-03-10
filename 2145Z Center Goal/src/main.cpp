@@ -30,27 +30,15 @@ void autonomous(void) {
     
   rollerSpeed(-100);
   task::sleep(300);
-  forwardPID(1590);
   rollerSpeed(100);
-  task::sleep(200);
-  leftPID(61, 3,.7);
-  forwardPID(500);
-  allSpin(100);
-  task::sleep(900);
-  reset();
-  backwardPID(700);
-  leftPID(136,5,.5);
-  allSpin(0);
-  task::sleep(200);
-  backwardTime(50, 1300);
-  task::sleep(300);
-  forwardPID(4140);
-  rightPID(46,5,1);
-  task::sleep(200);
-  allSpin(100);
-  forwardPID(900);
-  task::sleep(800);
+  forwardPID(2300);
   backwardPID(1000);
+  leftPID(42,5,1);
+  forwardPID(1450);
+  allSpin(50);
+  task::sleep(2000);
+  backwardPID(500);
+  allSpin(0);
   setCoast();
 
   
@@ -59,6 +47,7 @@ void autonomous(void) {
 
 // User control code
 void usercontrol(void) {
+  setCoast();
   task p = task(chassisMovement);
   task i = task(Intake);
   while (true) {
