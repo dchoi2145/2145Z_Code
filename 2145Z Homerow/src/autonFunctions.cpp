@@ -181,7 +181,6 @@ void forwardPID(double target) {
   reset();
   double trackingWheel = fabs(tracker.rotation(deg));
 
-  errorInertial = targetError + inertial_gyro.rotation(deg);
 
   while (target > trackingWheel) {
     //printf("error%f\n", targetError);
@@ -248,10 +247,6 @@ void forwardPID(double target) {
             voltageUnits::mV);
 
     prevError = error;
-    prevErrorInertial = errorInertial;
-
-    
-      errorInertial = inertial_gyro.rotation(degrees) - targetError;
 
       printf("heading%f\n", heading);
     
@@ -265,7 +260,7 @@ void forwardPID(double target) {
 }
 
 // This function moves the robot backwards using a PID controller
-void backwardPID(double target) {
+void backwardPID(double target, double previousHeading) {
   // Constants
   double kP = 0.15;
   double kPAngle = 6;
@@ -286,7 +281,6 @@ void backwardPID(double target) {
   reset();
   double trackingWheel = fabs(tracker.rotation(deg));
 
-  errorInertial = targetError + inertial_gyro.rotation(deg);
 
   while (target > trackingWheel) {
     //printf("error%f\n", targetError);
@@ -326,7 +320,7 @@ void backwardPID(double target) {
 
     // Find the speed of chassis based of the sum of the constants
     double motorPower = (kP * error) + (kI * totalError) + (kD * derivative);
-    double heading = (kPAngle * errorInertial) + (kDAngle * derivativeInertial);
+    double heading = previousHeading;
     
 
     // If the motorPower is larger then the limit, the motor power will equal
@@ -354,11 +348,6 @@ void backwardPID(double target) {
             voltageUnits::mV);
 
     prevError = error;
-    prevErrorInertial = errorInertial;
-
-    
-      errorInertial = inertial_gyro.rotation(degrees) - targetError;
-
       printf("heading%f\n", heading);
     
     task::sleep(10);
@@ -447,9 +436,7 @@ void rightPID(double target, double counterThresh, double accuracy) {
 
   // When the loop ends, the motors are set to brake for less uncertadoubley and
   // then set the coast for drive control slowly
-  prevTurn = inetVal;
   prevTarget = target;
-  targetError = prevTarget - prevTurn;
   printf("targetError%f\n", targetError);
   reset();
   setHold();
@@ -539,9 +526,7 @@ else{
 
   // When the loop ends, the motors are set to brake for less uncertadoubley and
   // then set the coast for drive control slowly
-  prevTurn = inetVal;
   prevTarget = target;
-  targetError = prevTarget - prevTurn;
   printf("targetError%f\n", targetError);
   reset();
   setHold();

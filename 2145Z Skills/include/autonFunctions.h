@@ -13,7 +13,7 @@ void intakeConveyor(int distance, int speed);
 void outtakeConveyor(int distance, int speed);
 void forwardTime(int speed, double t);
 void backwardTime(int speed, double t);
-void forwardPID(int target);
+void forwardPID(int target, double headingVal);
 void backwardPID(int target);
 void rightPID(int target, int counterThresh, double accuracy);
 void leftPID(int target, int counterThresh, double accuracy);

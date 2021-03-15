@@ -28,7 +28,7 @@ void pre_auton(void) {
 // auton goes in here
 void autonomous(void) {
     
-  rollerSpeed(-100);
+  /*rollerSpeed(-100);
   task::sleep(300);
   forwardPID(1590);
   rollerSpeed(100);
@@ -44,14 +44,17 @@ void autonomous(void) {
   task::sleep(200);
   backwardTime(50, 1300);
   task::sleep(300);
-  forwardPID(4140);
+  forwardPID(4240);
   rightPID(46,5,1);
   task::sleep(200);
   allSpin(100);
   forwardPID(900);
   task::sleep(800);
   backwardPID(1000);
-  setCoast();
+  setCoast();*/
+
+  rightPID(90,5,.5);
+  backwardPID(1000,90);
 
   
   

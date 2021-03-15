@@ -29,7 +29,7 @@ void pre_auton(void) {
 void autonomous(void) {
   // Red Right Side Home row
   // 1st&2nd 
-  rollerSpeed(-100);
+  /*rollerSpeed(-100);
   task::sleep(300);
   forwardPID(1550);
   leftPID(64, 1, 2);
@@ -122,7 +122,11 @@ void autonomous(void) {
   forwardPID(1000);
   forwardTime(35,1000);
   ballCheckMid(45, 4);
-  backwardPID(1000);
+  backwardPID(1000);*/
+  //rightPID(90,5,.5);
+  rightPID(90,5,.5);
+  forwardPID(500,90);
+
   
   
 

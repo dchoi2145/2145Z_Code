@@ -8,7 +8,7 @@ void backwardTime(double speed, double t);
 void forwardSpeed(double speed);
 void backwardSpeed(double speed);
 void forwardPID(double target);
-void backwardPID(double target);
+void backwardPID(double target, double previousHeading);
 void rightPID(double target, double counterThresh, double accuracy);
 void leftPID(double target, double counterThresh, double accuracy);
 void forwardSlowPID(double target);

@@ -29,12 +29,7 @@ void inertialCalibration() {
 }
 // This function resets all the values of the sensors
 void reset() {
-  BL.resetRotation();
-  BR.resetRotation();
-  FL.resetRotation();
-  FR.resetRotation();
   tracker.resetRotation();
-  inertial_gyro.resetRotation();
 }
 // This function allows our robot to move forwards for a certain amount of
 // degrees and for a set speed
@@ -270,7 +265,7 @@ void printTracker() {
 
 
 // This function moves the robot forwards using a PID controller
-void forwardPID(int target) {
+void forwardPID(int target, double headingVal) {
   // Constants
   double kP = 0.15;
   double kPAngle = 4;
@@ -291,12 +286,14 @@ void forwardPID(int target) {
   reset();
   double trackingWheel = fabs(tracker.rotation(deg));
   errorInertial = prevErrorInertial;
+  printf("%f\n", errorInertial);
 
 
   while (target > trackingWheel) {
-    // Update sensor values
+   // printf("%f\n", inertial_gyro.rotation(degrees));
+    //Update sensor values
     trackingWheel = fabs(tracker.rotation(deg));
-    errorInertial = inertial_gyro.rotation(degrees);
+    errorInertial = headingVal - prevErrorInertial;
 
     // Update the limit
     limit += 3;
@@ -322,16 +319,20 @@ void forwardPID(int target) {
     // Derivative Inertial
     derivativeInertial = errorInertial - prevErrorInertial;
 
+   
+
     // Find the speed of chassis based of the sum of the constants
     double motorPower = (kP * error) + (kI * totalError) + (kD * derivative);
     double heading = (kPAngle * errorInertial) + (kDAngle * derivativeInertial);
+    //printf("%f\n", heading);
 
     // If the motorPower is larger then the limit, the motor power will equal
+
     // the limit
     if (limit < motorPower) {
       motorPower = limit;
     }
-
+ 
     if (fabs(motorPower) < 10) {
       motorPower = 10;
     }
@@ -351,13 +352,13 @@ void forwardPID(int target) {
     Brain.Screen.print(trackingWheel);
 
     // Sets the speed of the drive
-    FL.spin(directionType::rev, 110 * (motorPower - motorPower / 90 * heading),
+    FL.spin(directionType::rev, 110 * (motorPower - (motorPower / 90 * heading)),
             voltageUnits::mV);
-    BL.spin(directionType::rev, 110 * (motorPower - motorPower / 90 * heading),
+    BL.spin(directionType::rev, 110 * (motorPower - (motorPower / 90 * heading)),
             voltageUnits::mV);
-    FR.spin(directionType::rev, 110 * (motorPower + motorPower / 90 * heading),
+    FR.spin(directionType::rev, 110 * (motorPower + (motorPower / 90 * heading)),
             voltageUnits::mV);
-    BR.spin(directionType::rev, 110 * (motorPower + motorPower / 90 * heading),
+    BR.spin(directionType::rev, 110 * (motorPower + (motorPower / 90 * heading)),
             voltageUnits::mV);
 
     prevError = error;
@@ -367,7 +368,7 @@ void forwardPID(int target) {
   }
   // When the loop ends, the motors are set to brake for less uncertainty and
   // then set the coast for drive control
-  printf("tracker%f\n", tracker.rotation(degrees));
+  //printf("tracker%f\n", tracker.rotation(degrees));
   reset();
   setHold();
   setCoast();
@@ -569,7 +570,7 @@ void rightPID(int target, int counterThresh, double accuracy) {
   // When the loop ends, the motors are set to brake for less uncertainty and
   // then set the coast for drive control slowly
   // inetVal = prevTurn;
-  printf("%f\n", inertial_gyro.rotation(degrees));
+
   reset();
   setHold();
   setCoast();
@@ -793,7 +794,7 @@ void leftPID(int target, int counterThresh, double accuracy) {
       reset();
       setCoast();
       }
-      void goTo(double finalX, double finalY, int turnDirection, double kP, double kD, 
+      /*void goTo(double finalX, double finalY, int turnDirection, double kP, double kD, 
               double minSpeed, double errorMargin){
   int sign1;
   int sign2;
@@ -854,4 +855,4 @@ void leftPID(int target, int counterThresh, double accuracy) {
   FR.stop(brake);
   BL.stop(brake);
   BR.stop(brake);
-}
+}*/

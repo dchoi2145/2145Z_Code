@@ -35,8 +35,8 @@ void autonomous(void) {
   backwardPID(1000);
   leftPID(42,5,1);
   forwardPID(1450);
-  allSpin(50);
-  task::sleep(2000);
+  allSpin(30);
+  task::sleep(3000);
   backwardPID(500);
   allSpin(0);
   setCoast();
