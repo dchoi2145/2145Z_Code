@@ -18,22 +18,22 @@ int chassisMovement(){
 
     //driving left side quadtratically 
     if(Controller1.Axis3.value()>0){ 
-      FL.spin(reverse, pow(Controller1.Axis3.value(), 2)/100, pct);//140
-      BL.spin(reverse, pow(Controller1.Axis3.value(), 2)/100, pct);
+      FL.spin(reverse, fabs(Controller1.Axis3.value()*.6), pct);//140
+      BL.spin(reverse, fabs(Controller1.Axis3.value()*.6), pct);
     }
     else{ 
-      FL.spin(fwd, pow(Controller1.Axis3.value(), 2)/100, pct);
-      BL.spin(fwd, pow(Controller1.Axis3.value(), 2)/100, pct);
+      FL.spin(fwd, fabs(Controller1.Axis3.value()*.6), pct);
+      BL.spin(fwd, fabs(Controller1.Axis3.value()*.6), pct);
     }
      
      //driving right side quadtratically 
     if(Controller1.Axis2.value()>0){
-      FR.spin(reverse, pow(Controller1.Axis2.value(), 2)/100, pct);
-      BR.spin(reverse, pow(Controller1.Axis2.value(), 2)/100, pct);
+      FR.spin(reverse, fabs(Controller1.Axis2.value()*.6), pct);
+      BR.spin(reverse, fabs(Controller1.Axis2.value()*.6), pct);
     }
     else{
-      FR.spin(fwd, pow(Controller1.Axis2.value(), 2)/100, pct);
-      BR.spin(fwd, pow(Controller1.Axis2.value(), 2)/100, pct);//140
+      FR.spin(fwd, fabs(Controller1.Axis2.value()*.6), pct);
+      BR.spin(fwd, fabs(Controller1.Axis2.value()*.6), pct);//140
     }
     
     task::sleep(10);

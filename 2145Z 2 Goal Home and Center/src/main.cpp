@@ -26,26 +26,32 @@ void pre_auton(void) {
 }
  
 // auton goes in here
-void autonomous(void) {
-    
+void autonomous(void) {  
   rollerSpeed(-100);
   task::sleep(300);
-  forwardPID(1370, 0); 
+  forwardPID(1450, 0); 
   rollerSpeed(100);
   task::sleep(200);
-  leftPID(61, 4,1.8); 
+  leftPID(61, 3,.7);
   forwardPID(600, -61);
   forwardSpeed(30);
-  goalScoreLine(100,13);
-  allSpin(-100);
-  backwardPID(1350, -61); 
-  allSpin(0);
-  rightPID(68,5,2);
-  rollerSpeed(100);
-  forwardPID(1200,68);
+  goalScore(100, 2);
+  conveyorSpeed(100);
   task::sleep(300);
-  backwardPID(1000,68);
-  forwardPID(1800,113);
+  allSpin(0);
+  allSpin(-100);
+  backwardPID(1400, -61); 
+  rightPID(67,5,1);
+  rollerSpeed(100);
+  forwardPID(1200,67);
+  backwardPID(1100,67);
+  rightPID(113,5,1);
+  forwardPID(1400,113);
+  task::sleep(1500);
+  allSpin(60);
+
+
+  
   
 
 

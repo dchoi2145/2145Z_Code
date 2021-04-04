@@ -21,7 +21,7 @@ double ballIn = 0;
 void inertialCalibration() {
   inertial_gyro.calibrate();
   while (inertial_gyro.isCalibrating()) {
-    wait(2000, msec);
+    wait(3000, msec);
   }
 }
 // This function resets all the values of the sensors
@@ -412,9 +412,9 @@ void backwardPID(double target, double headingVal) {
 // 45-90 5, 140, 8
 void rightPID(double target, double counterThresh, double accuracy) {
   // Constants
-  double kP = 1.4;
-  double kI = 0.06;
-  double kD = 5;
+  double kP = 1.3;
+  double kI = 0.05;
+  double kD = 5.2;
 
   double counter = 0;
   double error = 0;
@@ -484,10 +484,10 @@ void rightPID(double target, double counterThresh, double accuracy) {
     Brain.Screen.print("Error:");
     Brain.Screen.setCursor(2, 14);
     Brain.Screen.print(error);
-    if (fabs(error) <= 0.5) {
+    if (fabs(error) <= accuracy) {
       counter += 1;
     }
-    if (fabs(error) >= 0.5) {
+    if (fabs(error) >= accuracy) {
       counter = 0;
     }
 
@@ -505,9 +505,9 @@ void rightPID(double target, double counterThresh, double accuracy) {
 
 void leftPID(double target, double counterThresh, double accuracy) {
   // Constants
-  double kP = 1.4;
-  double kI = 0.04;
-  double kD = 5;
+  double kP = 1.3;
+  double kI = 0.05;
+  double kD = 5.2;
 
   double counter = 0;
   double error = 0;
@@ -573,10 +573,10 @@ void leftPID(double target, double counterThresh, double accuracy) {
     Brain.Screen.print("Error:");
     Brain.Screen.setCursor(2, 14);
     Brain.Screen.print(error);
-    if (fabs(error) <= 0.3) {
+    if (fabs(error) <= accuracy) {
       counter += 1;
     }
-    if (fabs(error) >= 0.3) {
+    if (fabs(error) >= accuracy) {
       counter = 0;
     }
 

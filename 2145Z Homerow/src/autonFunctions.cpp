@@ -21,7 +21,7 @@ double ballIn = 0;
 void inertialCalibration() {
   inertial_gyro.calibrate();
   while (inertial_gyro.isCalibrating()) {
-    wait(2000, msec);
+    wait(3000, msec);
   }
 }
 // This function resets all the values of the sensors
@@ -212,7 +212,6 @@ void forwardPID(double target, double headingVal) {
   reset();
   double trackingWheel = fabs(tracker.rotation(deg));
   errorInertial = prevErrorInertial;
-  printf("errorInertial %f\n", errorInertial);
 
 
   while (target > trackingWheel) {
@@ -250,6 +249,7 @@ void forwardPID(double target, double headingVal) {
     // Find the speed of chassis based of the sum of the constants
     double motorPower = (kP * error) + (kI * totalError) + (kD * derivative);
     double heading = (kPAngle * errorInertial) + (kDAngle * derivativeInertial);
+
     printf("heading %f\n ", heading);
 
     // If the motorPower is larger then the limit, the motor power will equal
@@ -322,7 +322,6 @@ void backwardPID(double target, double headingVal) {
   reset();
   double trackingWheel = fabs(tracker.rotation(deg));
   errorInertial = prevErrorInertial;
-  printf("errorInertial %f\n", errorInertial);
 
 
   while (target > trackingWheel) {
@@ -358,8 +357,8 @@ void backwardPID(double target, double headingVal) {
     // Find the speed of chassis based of the sum of the constants
     double motorPower = (kP * error) + (kI * totalError) + (kD * derivative);
     double heading = (kPAngle * errorInertial) + (kDAngle * derivativeInertial);
+   
     printf("heading %f\n ", heading);
-
     // If the motorPower is larger then the limit, the motor power will equal
 
     // the limit
@@ -412,9 +411,9 @@ void backwardPID(double target, double headingVal) {
 // 45-90 5, 140, 8
 void rightPID(double target, double counterThresh, double accuracy) {
   // Constants
-  double kP = 1.4;
-  double kI = 0.06;
-  double kD = 5;
+  double kP = 1.3;
+  double kI = 0.05;
+  double kD = 5.2;
 
   double counter = 0;
   double error = 0;
@@ -430,6 +429,7 @@ void rightPID(double target, double counterThresh, double accuracy) {
   // targetError = prevTurn - prevTarget;
   // target = target - targetError;
 
+  //while (counter < counterThresh) {
   while (counter < counterThresh) {
 
     // Update sensor values
@@ -484,10 +484,10 @@ void rightPID(double target, double counterThresh, double accuracy) {
     Brain.Screen.print("Error:");
     Brain.Screen.setCursor(2, 14);
     Brain.Screen.print(error);
-    if (fabs(error) <= 0.5) {
+    if (fabs(error) <= accuracy) {
       counter += 1;
     }
-    if (fabs(error) >= 0.5) {
+    if (fabs(error) >= accuracy) {
       counter = 0;
     }
 
@@ -497,6 +497,7 @@ void rightPID(double target, double counterThresh, double accuracy) {
   // When the loop ends, the motors are set to brake for less uncertainty and
   // then set the coast for drive control slowly
   // inetVal = prevTurn;
+    printf("errorInertial %f\n", inertial_gyro.rotation(deg));
 
   reset();
   setHold();
@@ -505,9 +506,9 @@ void rightPID(double target, double counterThresh, double accuracy) {
 
 void leftPID(double target, double counterThresh, double accuracy) {
   // Constants
-  double kP = 1.4;
-  double kI = 0.04;
-  double kD = 5;
+  double kP = 1.3;
+  double kI = 0.05;
+  double kD = 5.2;
 
   double counter = 0;
   double error = 0;
@@ -573,10 +574,10 @@ void leftPID(double target, double counterThresh, double accuracy) {
     Brain.Screen.print("Error:");
     Brain.Screen.setCursor(2, 14);
     Brain.Screen.print(error);
-    if (fabs(error) <= 0.3) {
+    if (fabs(error) <= accuracy) {
       counter += 1;
     }
-    if (fabs(error) >= 0.3) {
+    if (fabs(error) >= accuracy) {
       counter = 0;
     }
 

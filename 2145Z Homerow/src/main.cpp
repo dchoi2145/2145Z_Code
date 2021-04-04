@@ -27,29 +27,34 @@ void pre_auton(void) {
  
 // auton goes in here
 void autonomous(void) {
-    
   rollerSpeed(-100);
   task::sleep(300);
-  forwardPID(1370, 0); 
+  forwardPID(1430, 0); 
   rollerSpeed(100);
   task::sleep(200);
-  leftPID(61, 4,1.5);
+  leftPID(61, 3,.7); 
   forwardPID(600, -61);
   forwardSpeed(30);
-  goalScoreLine(100,13);
-  allSpin(-100);
-  backwardPID(1000, -61); 
+  goalScore(100, 2);
+  conveyorSpeed(100);
+  task::sleep(300);
   allSpin(0);
-  leftPID(270,5,1.5);//197,5,.5
+  allSpin(-100);
+  backwardPID(1200, -61); 
+  allSpin(0);
+  leftPID(197,3,1);
   allSpin(0);
   task::sleep(200);
-  forwardPID(3360, -197);
-  leftPID(151,4,1.5);
+  forwardPID(3290, -197);
+  leftPID(151,5,1.5);
   task::sleep(200);
   allSpin(100);
   forwardPID(900,-151);
   forwardSpeed(30);
-  goalScoreLine(100,15);
+  goalScore(80,2);
+  allSpin(100); 
+  task::sleep(300);
+  allSpin(0);
   backwardPID(1000,-151);
   setCoast();
  
