@@ -11,16 +11,17 @@ motor FL = motor(PORT17, ratio6_1, false);
 motor BL = motor(PORT18, ratio6_1, true);
 motor RightRoller = motor(PORT1, ratio6_1, false);
 motor LeftRoller = motor(PORT19, ratio6_1, true);
-motor Conveyor1 = motor(PORT15, ratio6_1, false);//bottom 2
+motor Conveyor1 = motor(PORT15, ratio6_1, true);//bottom 2
 motor Conveyor2 = motor(PORT20, ratio6_1, true);//top 1
 controller Controller1 = controller(primary);
 
 //sensors 
 inertial inertial_gyro = inertial(PORT12);
-encoder tracker = encoder(Brain.ThreeWirePort.E);
+encoder tracker = encoder(Brain.ThreeWirePort.C);
+encoder tracker2 = encoder(Brain.ThreeWirePort.E);
 line ballDetector1 = line(Brain.ThreeWirePort.B);
-line ballDetector2 = line(Brain.ThreeWirePort.C);
-line ballDetector3 = line(Brain.ThreeWirePort.D);
+line ballDetector2 = line(Brain.ThreeWirePort.G);
+line ballDetector3 = line(Brain.ThreeWirePort.A);
 optical optical1 = optical(PORT14);
 limit limit1 = limit(Brain.ThreeWirePort.G);
 

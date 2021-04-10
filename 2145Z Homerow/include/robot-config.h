@@ -13,6 +13,7 @@ extern motor Conveyor2;
 extern controller Controller1; 
 extern inertial inertial_gyro;
 extern encoder tracker;
+extern encoder tracker2;
 extern line ballDetector1;
 extern line ballDetector2;
 extern line ballDetector3;

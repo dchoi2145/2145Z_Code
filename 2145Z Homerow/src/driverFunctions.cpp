@@ -44,21 +44,37 @@ int chassisMovement(){
   //all intake control functions
   int Intake() {
   while (true) {
-    if(Controller1.ButtonL1.pressing()){
+
+    if(Controller1.ButtonL1.pressing()&&Controller1.ButtonL2.pressing()){
+        Conveyor1.spin(fwd, 100, pct);
+        Conveyor2.spin(fwd, 100, pct);
+    }
+    else if(Controller1.ButtonL1.pressing()){
         Conveyor1.spin(fwd, 100, pct);
     }
     else if(Controller1.ButtonL2.pressing()){
-        Conveyor2.spin(fwd, 100, pct);
-    }
-    else if(Controller1.ButtonL1.pressing()&&Controller1.ButtonL2.pressing()){
-        Conveyor1.spin(fwd, 100, pct);
         Conveyor2.spin(fwd, 100, pct);
     }
     else if(Controller1.ButtonRight.pressing()){
        Conveyor1.spin(reverse, 100, pct);
        Conveyor2.spin(reverse, 100, pct);
     }
-    else if(Controller1.ButtonR1.pressing()){
+    
+      else {
+        Conveyor1.spin(fwd, 0, pct);
+        Conveyor2.spin(fwd, 0, pct);
+        Conveyor1.stop(coast);
+        Conveyor2.stop(coast);
+    }
+  
+    task::sleep(10);
+    }
+  }
+
+  int sideRollers() {
+  while (true) {
+
+    if(Controller1.ButtonR1.pressing()){
       RightRoller.spin(fwd, 100, pct);
       LeftRoller.spin(fwd, 100, pct);
     }
@@ -70,12 +86,8 @@ int chassisMovement(){
       else {
         LeftRoller.spin(fwd, 0, pct);
         RightRoller.spin(fwd, 0, pct);
-        Conveyor1.spin(fwd, 0, pct);
-        Conveyor2.spin(fwd, 0, pct);
         LeftRoller.stop(coast);
         RightRoller.stop(coast);
-        Conveyor1.stop(coast);
-        Conveyor2.stop(coast);
     }
   
     task::sleep(10);
@@ -114,6 +126,17 @@ int chassisMovement(){
       Brain.Screen.print("Inertial:");
       Brain.Screen.setCursor(4,14);
       Brain.Screen.print(inertial_gyro.rotation(degrees));
+   }
+   void printTrackers(){
+      Brain.Screen.setCursor(8,1);
+      Brain.Screen.print("Tracker:");
+      Brain.Screen.setCursor(8,14);
+      Brain.Screen.print(tracker.rotation(deg));
+
+      Brain.Screen.setCursor(9,1);
+      Brain.Screen.print("Tracker2:");
+      Brain.Screen.setCursor(9,14);
+      Brain.Screen.print(tracker2.rotation(deg));
    }
    
    
