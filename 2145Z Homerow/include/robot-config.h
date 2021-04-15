@@ -15,9 +15,6 @@ extern inertial inertial_gyro;
 extern encoder tracker;
 extern encoder tracker2;
 extern line ballDetector1;
-extern line ballDetector2;
-extern line ballDetector3;
-extern optical optical1;
 extern limit limit1;
 
 /**

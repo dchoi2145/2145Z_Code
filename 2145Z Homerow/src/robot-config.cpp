@@ -19,11 +19,9 @@ controller Controller1 = controller(primary);
 inertial inertial_gyro = inertial(PORT12);
 encoder tracker = encoder(Brain.ThreeWirePort.C);
 encoder tracker2 = encoder(Brain.ThreeWirePort.E);
-line ballDetector1 = line(Brain.ThreeWirePort.B);
-line ballDetector2 = line(Brain.ThreeWirePort.G);
-line ballDetector3 = line(Brain.ThreeWirePort.A);
+line ballDetector1 = line(Brain.ThreeWirePort.G);
 optical optical1 = optical(PORT14);
-limit limit1 = limit(Brain.ThreeWirePort.G);
+limit limit1 = limit(Brain.ThreeWirePort.H);
 
 void vexcodeInit(void) {
   // Nothing to initialize

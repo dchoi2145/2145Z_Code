@@ -31,6 +31,5 @@ void ballCycleLine();
 void goalScoreLine(double speed, double balls);
 void index(double speed);
 void spit(double speedRight, double speedLeft);
-void curvePID(double target, double headingVal, double counterThresh, double accuracy, double speedRight, double speedLeft);
 
 #endif

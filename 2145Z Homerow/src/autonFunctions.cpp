@@ -8,8 +8,7 @@ using namespace vex;
 
 // These are variables for sensor values
 double lineSensorValue1 = ballDetector1.value(pct);
-double lineSensorValue2 = ballDetector2.value(pct);
-double lineSensorValue3 = ballDetector3.value(pct);
+
 
 double prevErrorInertial = 0;
 double prevTarget = 0;
@@ -21,7 +20,7 @@ double ballIn = 0;
 void inertialCalibration() {
   inertial_gyro.calibrate();
   while (inertial_gyro.isCalibrating()) {
-    wait(3000, msec);
+    wait(10, msec);
   }
 }
 // This function resets all the values of the sensors
@@ -128,9 +127,9 @@ void ballCycle(){
 void goalScore(double speed, double balls){ 
   while(ballIn < balls){
     Conveyor1.spin(fwd, speed, pct);
-    Conveyor2.spin(fwd, speed, pct);
-    RightRoller.spin(reverse, 100, pct);
-    LeftRoller.spin(reverse, 100, pct);
+    Conveyor2.spin(fwd, 100, pct);
+    RightRoller.spin(fwd, 100, pct);
+    LeftRoller.spin(fwd, 100, pct);
 
     ballCycle();
   }
@@ -208,9 +207,9 @@ void forwardPID(double target, double headingVal, double counterThresh, double a
   // Constants
   double kP = 0.13;
   double kPAngle = 5;
-  double kI = 0.07;
-  double kD = 0.25;
-  double kDAngle = 2;
+  double kI = 0.09;
+  double kD = 0.3;
+  double kDAngle = 2.5;
 
   double error = 0;
   double errorInertial = 0;
@@ -228,8 +227,9 @@ void forwardPID(double target, double headingVal, double counterThresh, double a
   errorInertial = prevErrorInertial;
 
 
-  while (counter < counterThresh) {
+  while (counter < counterThresh && ballDetector1.value(pct) > 67) {
     //Update sensor values
+    
     trackingWheel = ((fabs(tracker2.rotation(deg))+(fabs(tracker2.rotation(deg))))/2);
     errorInertial = headingVal - inertial_gyro.rotation(degrees);
 
@@ -241,6 +241,11 @@ void forwardPID(double target, double headingVal, double counterThresh, double a
 
     // Integral
     totalError += error;
+
+    Brain.Screen.setCursor(1, 1);
+    Brain.Screen.print("Line:");
+    Brain.Screen.setCursor(2, 14);
+    Brain.Screen.print(ballDetector1.value(pct));
 
     // introduces I term when needed
     if (error > 150) {
@@ -263,7 +268,6 @@ void forwardPID(double target, double headingVal, double counterThresh, double a
     double motorPower = (kP * error) + (kI * totalError) + (kD * derivative);
     double heading = (kPAngle * errorInertial) + (kDAngle * derivativeInertial);
 
-    printf("counter%f\n", counter);
 
     // If the motorPower is larger then the limit, the motor power will equal
 
@@ -326,9 +330,9 @@ void backwardPID(double target, double headingVal, double counterThresh, double 
   // Constants
   double kP = 0.13;
   double kPAngle = 5;
-  double kI = 0.07;
-  double kD = 0.25;
-  double kDAngle = 2;
+  double kI = 0.09;
+  double kD = 0.3;
+  double kDAngle = 2.5;
 
   double error = 0;
   double errorInertial = 0;
@@ -346,7 +350,7 @@ void backwardPID(double target, double headingVal, double counterThresh, double 
   errorInertial = prevErrorInertial;
 
 
-  while (counter < counterThresh) {
+  while (counter < counterThresh || lineSensorValue1 > 66) {
    // printf("%f\n", inertial_gyro.rotation(degrees));
     //Update sensor values
     trackingWheel = ((fabs(tracker2.rotation(deg))+(fabs(tracker2.rotation(deg))))/2);
@@ -380,7 +384,6 @@ void backwardPID(double target, double headingVal, double counterThresh, double 
     double motorPower = (kP * error) + (kI * totalError) + (kD * derivative);
     double heading = (kPAngle * errorInertial) + (kDAngle * derivativeInertial);
    
-    printf("heading %f\n ", heading);
     // If the motorPower is larger then the limit, the motor power will equal
 
     // the limit
@@ -462,6 +465,8 @@ void rightPID(double target, double counterThresh, double accuracy, double maxSp
 
     // Update sensor values
     // target = prevTarget;
+
+    printf("velocity %f/n", FR.velocity(pct));
     inetVal = inertial_gyro.rotation(degrees);
 
     // Update the limit
@@ -565,6 +570,7 @@ void leftPID(double target, double counterThresh, double accuracy, double maxSpe
 
     // Update sensor values
     // target = prevTarget;
+    printf("velocity %f/n", FR.velocity(pct));
     inetVal = fabs(inertial_gyro.rotation(degrees));
 
     // Update the limit
@@ -633,122 +639,3 @@ void leftPID(double target, double counterThresh, double accuracy, double maxSpe
   setHold();
   setCoast();
 }
-
-void curvePID(double target, double headingVal, double counterThresh, double accuracy, double speedRight, double speedLeft) {
-  // Constants
-  double kP = 0.1;
-  double kPAngle = 0;
-  double kI = 0.04;
-  double kD = 0.1;
-  double kDAngle = 1;
-
-  double error = 0;
-  double errorInertial = 0;
-  double totalError = 0;
-  double prevError = 0;
-  double derivative;
-  double counter = 0;
-  double derivativeInertial = 0;
-  double limit = 0;
-
-  // Resets the sensor values and then sets the current sensor values to the
-  // sensors
-  reset();
-  double trackingWheel = ((fabs(tracker.rotation(deg))));
-  errorInertial = prevErrorInertial;
-
-
-  while (counter < counterThresh) {
-    //Update sensor values
-    trackingWheel = ((fabs(tracker.rotation(deg))));
-    errorInertial = headingVal - inertial_gyro.rotation(degrees);
-
-    // Update the limit
-    limit += 3;
-
-    // Proportional
-    error = target - trackingWheel;
-
-    // Integral
-    totalError += error;
-
-    // introduces I term when needed
-    if (error > 150) {
-      totalError = 0;
-    }
-
-    if (fabs(error) < 150) {
-      totalError = 20;
-    }
-
-    // Derivative
-    derivative = error - prevError;
-
-    // Derivative Inertial
-    derivativeInertial = errorInertial - prevErrorInertial;
-
-   
-
-    // Find the speed of chassis based of the sum of the constants
-    double motorPower = (kP * error) + (kI * totalError) + (kD * derivative);
-    double heading = (kPAngle * errorInertial) + (kDAngle * derivativeInertial);
-
-    printf("counter%f\n", counter);
-
-    // If the motorPower is larger then the limit, the motor power will equal
-
-    // the limit
-    if (limit < motorPower) {
-      motorPower = limit;
-    }
- 
-    if (fabs(motorPower) < 10) {
-      motorPower = 10;
-    }
-
-   /* if (motorPower > 90) {
-      motorPower = 90;
-    }
-*/
-    Brain.Screen.setCursor(3, 1);
-    Brain.Screen.print("Power:");
-    Brain.Screen.setCursor(3, 14);
-    Brain.Screen.print(motorPower);
-
-    Brain.Screen.setCursor(4, 1);
-    Brain.Screen.print("Tracker:");
-    Brain.Screen.setCursor(4, 14);
-    Brain.Screen.print(trackingWheel);
-
-    // Sets the speed of the drive
-    FR.spin(directionType::fwd, 110* speedRight,
-            voltageUnits::mV);
-    BR.spin(directionType::fwd,110* speedRight,
-            voltageUnits::mV);
-    FL.spin(directionType::fwd, 110* speedLeft,
-            voltageUnits::mV);
-    BL.spin(directionType::fwd,110* speedLeft,
-            voltageUnits::mV);
-  
-
-    prevError = error;
-    prevErrorInertial = errorInertial;
-    if (fabs(error) <= accuracy) {
-      counter += 1;
-    }
-    if (fabs(error) >= accuracy) {
-      counter = 0;
-    }
-
-    
-
-    task::sleep(10);
-  }
-  // When the loop ends, the motors are set to brake for less uncertainty and
-  // then set the coast for drive control
-  //printf("tracker%f\n", tracker.rotation(degrees));
-  reset();
-  setHold();
-  setCoast();
-}
-

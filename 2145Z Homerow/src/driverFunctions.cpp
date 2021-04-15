@@ -7,9 +7,7 @@
 using namespace vex;
 
   int lineSensor1Value = 0;
-  int lineSensor2Value = 0;
-  int lineSensor3Value = 0;
-  int optical1Hue = 0;
+
   int inetVal = 0;
 
 //code for drive
@@ -18,22 +16,22 @@ int chassisMovement(){
 
     //driving left side quadtratically 
     if(Controller1.Axis3.value()>0){ 
-      FL.spin(reverse, abs(Controller1.Axis3.value()), pct);//140
-      BL.spin(reverse, abs(Controller1.Axis3.value()), pct);
+      FL.spin(reverse, (pow(Controller1.Axis3.value(), 2)/100), pct);//140
+      BL.spin(reverse, (pow(Controller1.Axis3.value(), 2)/100), pct);
     }
     else{ 
-      FL.spin(fwd, abs(Controller1.Axis3.value()), pct);
-      BL.spin(fwd, abs(Controller1.Axis3.value()), pct);
+      FL.spin(fwd, (pow(Controller1.Axis3.value(), 2)/100), pct);
+      BL.spin(fwd, (pow(Controller1.Axis3.value(), 2)/100), pct);
     }
      
      //driving right side quadtratically 
     if(Controller1.Axis2.value()>0){
-      FR.spin(reverse, Controller1.Axis2.value(), pct);
-      BR.spin(reverse, Controller1.Axis2.value(), pct);
+      FR.spin(reverse, (pow(Controller1.Axis2.value(), 2)/100), pct);
+      BR.spin(reverse, (pow(Controller1.Axis2.value(), 2)/100), pct);
     }
     else{
-      FR.spin(fwd, pow(Controller1.Axis2.value(), 2)/100, pct);
-      BR.spin(fwd, pow(Controller1.Axis2.value(), 2)/100, pct);//140
+      FR.spin(fwd, (pow(Controller1.Axis2.value(), 2)/100), pct);
+      BR.spin(fwd, (pow(Controller1.Axis2.value(), 2)/100), pct);//140
     }
     
     task::sleep(10);
@@ -58,6 +56,8 @@ int chassisMovement(){
     else if(Controller1.ButtonRight.pressing()){
        Conveyor1.spin(reverse, 100, pct);
        Conveyor2.spin(reverse, 100, pct);
+       RightRoller.spin(reverse, 100, pct);
+       LeftRoller.spin(reverse, 100, pct);
     }
     
       else {
@@ -77,6 +77,12 @@ int chassisMovement(){
     if(Controller1.ButtonR1.pressing()){
       RightRoller.spin(fwd, 100, pct);
       LeftRoller.spin(fwd, 100, pct);
+    }
+    else if(Controller1.ButtonRight.pressing()){
+       Conveyor1.spin(reverse, 100, pct);
+       Conveyor2.spin(reverse, 100, pct);
+       RightRoller.spin(reverse, 100, pct);
+       LeftRoller.spin(reverse, 100, pct);
     }
     else if(Controller1.ButtonR2.pressing()){
       RightRoller.spin(reverse, 100, pct);
@@ -102,24 +108,8 @@ int chassisMovement(){
 
   }
   //prints value of line sensor to screen
-   void printLineValue2(){
-      Brain.Screen.setCursor(2,1);
-      Brain.Screen.print("Line Sensor2:");
-      Brain.Screen.setCursor(2,14);
-      Brain.Screen.print(ballDetector2.value(pct));
 
-   }
-
-   void printOptical(){ 
-      Brain.Screen.setCursor(3,1);
-      Brain.Screen.print("Optical:");
-      Brain.Screen.setCursor(3,14);
-      Brain.Screen.print(optical1.hue());
-   }
-
-   void opticalLight(){
-     optical1.setLightPower(100);
-   }
+   
    
    void printInet(){
       Brain.Screen.setCursor(4,1);

@@ -22,16 +22,16 @@ void pre_auton(void) {
 
   vexcodeInit();
   inertialCalibration();
-  opticalLight();
+  
 }
  
 // auton goes in here
 void autonomous(void) {
   //Goal 1
   index(60);
-  forwardPID(1970,0,3,20);
+  forwardPID(2000,0,3,20);
   index(60);
-  backwardPID(630,0,3,15);
+  backwardPID(600,0,3,15);
   leftPID(62,3,1,100,1,.04, 5.5);
   forwardPID(800,-62,3,15);
   //goalScore
@@ -43,10 +43,10 @@ void autonomous(void) {
   //goalScore
   allSpin(-100);
   //Goal 2
-  backwardPID(1970,-62,3,15);
+  backwardPID(1880,-62,3,15);
   leftPID(207,4,1,80,.8,.05, 5);
   index(60);
-  forwardPID(840,-207,3,15);
+  forwardPID(970,-207,3,15);
   leftPID(109,4,1,90,1,.04, 5);
   index(60); 
   forwardPID(1170,-109,3,15);
@@ -65,11 +65,11 @@ void autonomous(void) {
   index(60);
   leftPID(215,3,1,90,1,.04,5);
   index(60);
-  forwardPID(1000,-215,3,15);
+  forwardPID(930,-215,3,15);
   allSpin(100);
   task::sleep(500);
   index(60);
-  backwardPID(500,-215,5,10);
+  backwardPID(430,-215,5,10);
   leftPID(155,4,1,90,1,.04,5);
   forwardPID(670,-155,3,15);
   //goalScore
@@ -79,7 +79,9 @@ void autonomous(void) {
   task::sleep(1000);
   allSpin(0);
   //goalScore
-  backwardPID(1900,-155,3,15);
+  allSpin(-100);
+  backwardPID(0,-155,3,30);
+  backwardPID(1900,-155,3,30);
   //Goal 4
   leftPID(285,4,1,80,.8,.05,5); 
   index(60);
@@ -87,15 +89,16 @@ void autonomous(void) {
   index(60);
   leftPID(197,4,1,90,1,.04,5);
   index(60);
-  forwardPID(1100,-197,3,15);
+  forwardPID(1200,-197,3,15);
   index(60);
   //goalScore
   task::sleep(100);
-  forwardSpeed(10);
+  forwardSpeed(20);
   allSpin(100);
   task::sleep(1000);
   allSpin(0);
   //goalScore
+  allSpin(-100);
   backwardPID(780,-197,3,15);
   //Goal 5
   leftPID(287,3,1,287,1,.04,5);
@@ -105,15 +108,89 @@ void autonomous(void) {
   index(60);
   forwardPID(830,-187,3,15);
   index(60);
-  backwardPID(430,-187,3,15);
+  backwardPID(470,-187,3,15);
   leftPID(248,3,1,90,1,.04,5);
   forwardPID(700,-248,3,15);
   //goalScore
+  task::sleep(100);
   forwardSpeed(20);
   allSpin(100);
   task::sleep(1000);
   allSpin(0);
   //goalScore
+  allSpin(-100);
+  backwardPID(1550,-248,3,30);
+  //Goal 6
+  leftPID(383,3,1,80,.8,.05,5);
+  index(60);
+  forwardPID(1200,-383,3,30);
+  index(60);
+  leftPID(290,3,1,90,1,.04,5);
+  forwardPID(1280,-290,3,30);
+  //goalScore
+  task::sleep(100);
+  forwardSpeed(20);
+  allSpin(100);
+  task::sleep(1000);
+  allSpin(0);
+  //goalScore
+  backwardPID(290,-290,3,30);
+  //goal 7
+  leftPID(380,3,1,90,1,.04,5); 
+  index(60);
+  forwardPID(1300,-380,3,30);
+  index(60);
+  leftPID(393,3,1,90,1,.04,5);
+  index(60);
+  forwardPID(1000,-392,3,30);
+  allSpin(100);
+  task::sleep(500);
+  index(60);
+  backwardPID(700,-393,5,30);
+  leftPID(339,3,1,90,1,.04,5);
+  forwardPID(800,-339,3,30);
+  //goalScore
+  task::sleep(100);
+  forwardSpeed(20);
+  allSpin(100);
+  task::sleep(1000);
+  allSpin(0);
+  //goalScore
+  allSpin(-100);
+  backwardPID(600,-339,3,30);
+  //Goal 8
+  leftPID(464,3,1,80,.8,.05,5);
+  index(60);
+  forwardPID(1730,-464,3,30);
+  index(60);
+  task::sleep(200);
+  leftPID(376,3,1,90,1,.04,5);
+   //goalScore
+  task::sleep(100);
+  forwardSpeed(20);
+  allSpin(100);
+  task::sleep(1000);
+  allSpin(0);
+  //goalScore
+  allSpin(-100);
+  backwardPID(500,-376,3,30);
+  //Goal 9
+  leftPID(197,3,1,80,.8,.05,5);
+  index(60);
+  forwardPID(1100,-197,3,30);
+  index(60);
+  task::sleep(100);
+  forwardSpeed(80);
+  task::sleep(700);
+  rollerSpeed(-100);
+  
+  /*forwardPID(1000,0,3,10);
+  forwardSpeed(10);
+  goalScore(20,1);*/
+
+
+
+
 
   
 
@@ -138,12 +215,8 @@ void usercontrol(void) {
   task e = task(Intake);
   task x = task(sideRollers);
   while (true) {
-    printTrackers();
-    opticalLight();
     printLineValue1();
-    printLineValue2();
-    printOptical();
-    printInet();
+
     
    
 
