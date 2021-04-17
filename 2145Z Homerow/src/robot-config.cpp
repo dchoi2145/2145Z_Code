@@ -21,7 +21,8 @@ encoder tracker = encoder(Brain.ThreeWirePort.C);
 encoder tracker2 = encoder(Brain.ThreeWirePort.E);
 line ballDetector1 = line(Brain.ThreeWirePort.G);
 optical optical1 = optical(PORT14);
-limit limit1 = limit(Brain.ThreeWirePort.H);
+line ballDetector2 = line(Brain.ThreeWirePort.H);
+bumper bumper1 = bumper(Brain.ThreeWirePort.B);
 
 void vexcodeInit(void) {
   // Nothing to initialize

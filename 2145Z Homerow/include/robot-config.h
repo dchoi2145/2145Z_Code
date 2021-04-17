@@ -15,7 +15,8 @@ extern inertial inertial_gyro;
 extern encoder tracker;
 extern encoder tracker2;
 extern line ballDetector1;
-extern limit limit1;
+extern line ballDetector2;
+extern bumper bumper1;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.

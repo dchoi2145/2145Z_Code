@@ -28,165 +28,144 @@ void pre_auton(void) {
 // auton goes in here
 void autonomous(void) {
   //Goal 1
-  index(60);
+  index(60, 100);
   forwardPID(2000,0,3,20);
-  index(60);
+  index(60, 100);
   backwardPID(600,0,3,15);
   leftPID(62,3,1,100,1,.04, 5.5);
-  forwardPID(800,-62,3,15);
-  //goalScore
-  task::sleep(100);
-  forwardSpeed(30);
-  allSpin(100);
-  task::sleep(1500);
-  allSpin(0);
-  //goalScore
+  index(100, 10);
+  forwardPIDLight(1100,-62,3,15);
+  task::sleep(200);
+  forwardSpeed(20);
+  goalScore(100,1,0);
   allSpin(-100);
+
   //Goal 2
   backwardPID(1880,-62,3,15);
   leftPID(207,4,1,80,.8,.05, 5);
-  index(60);
+  index(60,100);
   forwardPID(970,-207,3,15);
   leftPID(109,4,1,90,1,.04, 5);
-  index(60); 
-  forwardPID(1170,-109,3,15);
-  //goalScore
+  index(60,100); 
+  forwardPIDLight(1570,-109,3,15);
   task::sleep(100);
-  forwardSpeed(20);
-  allSpin(100);
-  task::sleep(1500);
-  allSpin(0);
-  //goalScore
+  forwardSpeed(20);;
+  goalScore1();
   backwardPID(300,-109,3,15);
+  
   //Goal 3
-  leftPID(199,4,1,90,1,.04,5);
-  index(60);
+  leftTurn(79,4,1,90,60);
+  allSpin(-100);
+  task::sleep(400);
+  leftPID(199,4,1,90,1,.04,5.5);
+  index(60,100);
   forwardPID(1300,-199,3,15);
-  index(60);
+  index(60,100);
   leftPID(215,3,1,90,1,.04,5);
-  index(60);
+  index(60,100);
   forwardPID(930,-215,3,15);
-  allSpin(100);
-  task::sleep(500);
-  index(60);
-  backwardPID(430,-215,5,10);
+  index(100,30);
+  backwardPID(390,-215,5,10);
   leftPID(155,4,1,90,1,.04,5);
-  forwardPID(670,-155,3,15);
-  //goalScore
+  forwardPIDLight(900,-155,3,15);
   task::sleep(100);
   forwardSpeed(20);
-  allSpin(100);
-  task::sleep(1000);
-  allSpin(0);
-  //goalScore
+  goalScore(100,1,0);
   allSpin(-100);
-  backwardPID(0,-155,3,30);
-  backwardPID(1900,-155,3,30);
+  backwardPID(1970,-155,3,30);
+
   //Goal 4
   leftPID(285,4,1,80,.8,.05,5); 
-  index(60);
-  forwardPID(1080,-285,3,15);
-  index(60);
+  index(60,100);
+  forwardPID(910,-285,3,15);
+  index(60,100);
   leftPID(197,4,1,90,1,.04,5);
-  index(60);
-  forwardPID(1200,-197,3,15);
-  index(60);
-  //goalScore
+  index(60,100);
+  forwardPIDLight(1500,-197,3,15);
+  index(100,30);
   task::sleep(100);
-  forwardSpeed(20);
-  allSpin(100);
-  task::sleep(1000);
-  allSpin(0);
-  //goalScore
+  forwardSpeed(20);;
+  goalScore1();
   allSpin(-100);
   backwardPID(780,-197,3,15);
+
   //Goal 5
   leftPID(287,3,1,287,1,.04,5);
-  index(60);
+  index(60,100);
   forwardPID(1600,-287,3,15);
   leftPID(187,3,1,90,1,.04,5);
-  index(60);
+  index(60,100);
   forwardPID(830,-187,3,15);
-  index(60);
-  backwardPID(470,-187,3,15);
+  index(100,30);
+  backwardPID(520,-187,3,15);
   leftPID(248,3,1,90,1,.04,5);
-  forwardPID(700,-248,3,15);
-  //goalScore
+  forwardPIDLight(1000,-248,3,15);
   task::sleep(100);
   forwardSpeed(20);
-  allSpin(100);
-  task::sleep(1000);
-  allSpin(0);
-  //goalScore
+  goalScore(100,1,0);
   allSpin(-100);
   backwardPID(1550,-248,3,30);
+
   //Goal 6
   leftPID(383,3,1,80,.8,.05,5);
-  index(60);
-  forwardPID(1200,-383,3,30);
-  index(60);
-  leftPID(290,3,1,90,1,.04,5);
-  forwardPID(1280,-290,3,30);
-  //goalScore
+  index(60,100);
+  forwardPID(1100,-383,3,30);
+  index(100,30);
+  leftPID(292,3,1,90,1,.04,5);
+  forwardPIDLight(1500,-292,3,30);
   task::sleep(100);
-  forwardSpeed(20);
-  allSpin(100);
-  task::sleep(1000);
-  allSpin(0);
-  //goalScore
-  backwardPID(290,-290,3,30);
+  forwardSpeed(20);;
+  goalScore1();
+  backwardPID(290,-292,3,30);
+
   //goal 7
+  leftPID(400,3,1,90,1,.04,5); 
+  allSpin(-100);
+  task::sleep(200);
   leftPID(380,3,1,90,1,.04,5); 
-  index(60);
+  index(60,100);
   forwardPID(1300,-380,3,30);
-  index(60);
+  index(60,100);
   leftPID(393,3,1,90,1,.04,5);
-  index(60);
+  index(60,100);
   forwardPID(1000,-392,3,30);
-  allSpin(100);
-  task::sleep(500);
-  index(60);
-  backwardPID(700,-393,5,30);
-  leftPID(339,3,1,90,1,.04,5);
-  forwardPID(800,-339,3,30);
-  //goalScore
+  index(60,100);
+  backwardPID(560,-393,5,30);
+  leftPID(338,3,1,90,1,.04,5);
+  forwardPIDLight(1200,-338,3,30);
   task::sleep(100);
   forwardSpeed(20);
-  allSpin(100);
-  task::sleep(1000);
-  allSpin(0);
-  //goalScore
+  goalScore(100,1,0);
   allSpin(-100);
-  backwardPID(600,-339,3,30);
+  backwardPID(600,-338,3,30);
+
   //Goal 8
   leftPID(464,3,1,80,.8,.05,5);
-  index(60);
-  forwardPID(1730,-464,3,30);
-  index(60);
-  task::sleep(200);
+  index(60,100);
+  forwardPID(1680,-464,3,30);
+  index(60,100);
+  task::sleep(300);
   leftPID(376,3,1,90,1,.04,5);
-   //goalScore
+  index(100,30);
+  forwardPIDLight(500,-376,3,1);
   task::sleep(100);
-  forwardSpeed(20);
-  allSpin(100);
-  task::sleep(1000);
-  allSpin(0);
-  //goalScore
-  allSpin(-100);
+  forwardSpeed(20);;
+  goalScore1();
+  task::sleep(200);
+  allSpin(-50);
   backwardPID(500,-376,3,30);
+
   //Goal 9
-  leftPID(197,3,1,80,.8,.05,5);
-  index(60);
-  forwardPID(1100,-197,3,30);
-  index(60);
-  task::sleep(100);
+  leftPID(198,3,1,80,.8,.05,5);
+  index(60,100);
+  forwardPID(1700,-197,3,30);
+  index(60,100);
+  rollerSpeed(-20);
   forwardSpeed(80);
   task::sleep(700);
   rollerSpeed(-100);
   
-  /*forwardPID(1000,0,3,10);
-  forwardSpeed(10);
-  goalScore(20,1);*/
+
 
 
 
