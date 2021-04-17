@@ -34,8 +34,6 @@ void spit(double speedRight, double speedLeft);
 void forwardPIDLight(double target, double headingVal, double counterThresh, double accuracy);
 void goalScore1();
 void leftTurn(double target, double counterThresh, double accuracy, double maxSpeed, double Speed);
-void goalScoree(double speed, double balls, double time);
-void goalScoreee(double speed, double balls, double time);
-void goalScoreeee(double speed, double balls, double time);
+
 
 #endif
