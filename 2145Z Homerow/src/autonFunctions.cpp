@@ -114,11 +114,8 @@ void ballCycle(){
     Brain.Screen.setCursor(7, 14);
     Brain.Screen.print(ballIn);
         printf("counter%f\n", counter);
-    if(counter >= 1){
-      Conveyor2.stop(hold);
-    }
 
-    if(bumper1.value() !=0){
+    if(ballDetector3.value(pct) < 65){
       ballIn++;
       counter++;
       task::sleep(100);
@@ -135,11 +132,11 @@ void goalScore1(){
 double counter = 0;
 
   while(counter == 0){
-if(bumper1.value() != 0){
+if(ballDetector3.value(pct) < 60){
   counter ++;
 }
     Conveyor1.spin(fwd,100,pct);
-    Conveyor2.spin(fwd, 100, pct);
+    Conveyor2.spin(fwd, 50, pct);
     RightRoller.spin(fwd, 100, pct);
     LeftRoller.spin(fwd, 100, pct);     
 
@@ -150,6 +147,9 @@ if(bumper1.value() != 0){
     task::sleep(300);
     Conveyor1.stop(coast);
     Conveyor2.stop(coast);
+    RightRoller.stop(coast);
+    LeftRoller.stop(coast);
+  
 }
 
 void goalScore(double speed, double balls, double time){ 
@@ -157,7 +157,7 @@ void goalScore(double speed, double balls, double time){
   while(balls > ballIn){
 
     Conveyor1.spin(fwd, 100, pct);
-    Conveyor2.spin(fwd, 70, pct);
+    Conveyor2.spin(fwd, 100, pct);
     RightRoller.spin(fwd, 100, pct);
     LeftRoller.spin(fwd, 100, pct);     
 
@@ -169,9 +169,9 @@ void goalScore(double speed, double balls, double time){
   while(counter == 0){
     
     printf("counter%f\n", counter);
-    Conveyor1.spin(fwd,70,pct);
-    RightRoller.spin(reverse, 100, pct);
-    LeftRoller.spin(reverse, 100, pct);
+    Conveyor1.spin(fwd,50,pct);
+    RightRoller.spin(fwd, 100, pct);
+    LeftRoller.spin(fwd, 100, pct);
     Conveyor2.spin(reverse, 100, pct);
 
       if(ballDetector2.value(pct) < 60){
@@ -181,6 +181,12 @@ void goalScore(double speed, double balls, double time){
 
 
 }
+    Conveyor2.stop(hold);
+    Conveyor1.stop(coast);
+    task::sleep(300);
+    RightRoller.stop(coast);
+    LeftRoller.stop(coast);
+  
 ballIn = 0;
 counter = 0;
 }
@@ -416,6 +422,7 @@ void backwardPID(double target, double headingVal, double counterThresh, double 
     if (error > 150) {
       totalError = 0;
     }
+    printf("error%f\n", error);
 
     if (fabs(error) < 150) {
       totalError = 20;
@@ -445,6 +452,15 @@ void backwardPID(double target, double headingVal, double counterThresh, double 
     if (motorPower > 90) {
       motorPower = 90;
     }
+
+
+    /*if(fabs(error) < outtake){
+      allSpin(-100);
+    }
+    if(outtake == 0){
+    
+    }*/
+  
 
     Brain.Screen.setCursor(3, 1);
     Brain.Screen.print("Power:");

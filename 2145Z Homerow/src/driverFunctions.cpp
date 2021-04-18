@@ -109,6 +109,10 @@ int chassisMovement(){
       Brain.Screen.print("Line Sensor2:");
       Brain.Screen.setCursor(2,14);
       Brain.Screen.print(ballDetector2.value(pct));
+      Brain.Screen.setCursor(3,1);
+      Brain.Screen.print("Line Sensor3:");
+      Brain.Screen.setCursor(3,14);
+      Brain.Screen.print(ballDetector3.value(pct));
 
   }
   //prints value of line sensor to screen

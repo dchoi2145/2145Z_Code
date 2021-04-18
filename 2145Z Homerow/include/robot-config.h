@@ -16,7 +16,7 @@ extern encoder tracker;
 extern encoder tracker2;
 extern line ballDetector1;
 extern line ballDetector2;
-extern bumper bumper1;
+extern line ballDetector3;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.
