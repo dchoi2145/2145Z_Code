@@ -13,11 +13,10 @@ extern motor Conveyor2;
 extern controller Controller1; 
 extern inertial inertial_gyro;
 extern encoder tracker;
+extern encoder tracker2;
 extern line ballDetector1;
 extern line ballDetector2;
 extern line ballDetector3;
-extern optical optical1;
-extern limit limit1;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.
@@ -25,4 +24,3 @@ extern limit limit1;
  * This should be called at the start of your int main function.
  */
 void vexcodeInit(void);
-

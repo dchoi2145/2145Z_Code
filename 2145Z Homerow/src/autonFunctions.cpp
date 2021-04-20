@@ -29,6 +29,13 @@ void reset() {
   tracker2.resetRotation();
 }
 
+void createBallCountTask(){
+  task y = task(ballCycle);
+}
+
+void stopBallCountTask(){
+  task::stop(ballCycle);
+}
 // This function allows our robot to move at a specfic speed until told to stop
 void forwardTime(double speed, double t) {
   reset();
@@ -107,25 +114,52 @@ void allSpin(double speed) {
   RightRoller.spin(fwd, speed, pct);
   LeftRoller.spin(fwd, speed, pct);
 }
+double counter = 0;
+bool ball = false;
 
-void ballCycle(){
-  double counter = 0;
-  while(counter < 1){
+int ballCycle(){
+  while(true){
     Brain.Screen.setCursor(7, 14);
     Brain.Screen.print(ballIn);
-        printf("counter%f\n", counter);
+    printf("counter%f\n", counter);
 
-    if(ballDetector3.value(pct) < 65){
-      ballIn++;
-      counter++;
-      task::sleep(100);
-
-      
+  if(ballDetector3.value(pct) < 60 && ball == false){
+      counter ++;
+      ball = true;
+  }
+    else if(ballDetector3.value(pct) > 68){
+      ball = false;
     }
   }
-  counter = 0;
-  
+  return counter;
 } 
+
+//it descores 3
+
+void goalScore(){ 
+
+  counter = 0;
+
+  while(2 > counter){
+
+    Conveyor1.spin(fwd, 100, pct);
+    Conveyor2.spin(fwd, 100, pct);
+    RightRoller.spin(fwd, 100, pct);
+    LeftRoller.spin(fwd, 100, pct);
+
+    if(counter == 1){
+      Conveyor1.spin(fwd, 50, pct);
+    }
+
+    task::sleep(10);   
+  }
+    RightRoller.stop(brake);
+    LeftRoller.stop(brake);
+    task::sleep(100);
+    Conveyor2.stop(brake);
+    Conveyor1.stop(brake);
+    counter = 0; 
+}
 
 void goalScore1(){
 
@@ -152,44 +186,6 @@ if(ballDetector3.value(pct) < 60){
   
 }
 
-void goalScore(double speed, double balls, double time){ 
-
-  while(balls > ballIn){
-
-    Conveyor1.spin(fwd, 100, pct);
-    Conveyor2.spin(fwd, 100, pct);
-    RightRoller.spin(fwd, 100, pct);
-    LeftRoller.spin(fwd, 100, pct);     
-
-    ballCycle();
-    
-
-  }
-  double counter = 0;
-  while(counter == 0){
-    
-    printf("counter%f\n", counter);
-    Conveyor1.spin(fwd,50,pct);
-    RightRoller.spin(fwd, 100, pct);
-    LeftRoller.spin(fwd, 100, pct);
-    Conveyor2.spin(reverse, 100, pct);
-
-      if(ballDetector2.value(pct) < 60){
-      counter ++;
-
-  }
-
-
-}
-    Conveyor2.stop(hold);
-    Conveyor1.stop(coast);
-    task::sleep(300);
-    RightRoller.stop(coast);
-    LeftRoller.stop(coast);
-  
-ballIn = 0;
-counter = 0;
-}
 
 
 
@@ -259,10 +255,10 @@ void printTracker() {
 void forwardPID(double target, double headingVal, double counterThresh, double accuracy) {
   // Constants
   double kP = 0.13;
-  double kPAngle = 5;
+  double kPAngle = 4;
   double kI = 0.09;
   double kD = 0.3;
-  double kDAngle = 2.5;
+  double kDAngle = 6;
 
   double error = 0;
   double errorInertial = 0;
@@ -382,10 +378,10 @@ void forwardPID(double target, double headingVal, double counterThresh, double a
 void backwardPID(double target, double headingVal, double counterThresh, double accuracy){
   // Constants
   double kP = 0.13;
-  double kPAngle = 5;
+  double kPAngle = 4;
   double kI = 0.09;
   double kD = 0.3;
-  double kDAngle = 2.5;
+  double kDAngle = 6;
 
   double error = 0;
   double errorInertial = 0;

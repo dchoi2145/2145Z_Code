@@ -13,7 +13,7 @@ void rightPID(double target, double counterThresh, double accuracy, double maxSp
 void leftPID(double target, double counterThresh, double accuracy, double maxSpeed, double kP, double kI, double kD);
 void forwardSlowPID(double target);
 void backwardSlowPID(double target);
-void goalScore(double speed, double balls, double time);
+void goalScore();
 void rollerSpeed(double speed);
 void conveyorBottom(double speed);
 void conveyorTop(double speed);
@@ -25,7 +25,7 @@ void prdoubleInet();
 void rightPID2(double target);
 void leftPID2(double target);
 void prdoubleTracker();
-void ballCycle();
+int ballCycle();
 void ballCheckMid(double speed, double balls);
 void ballCycleLine();
 void goalScoreLine(double speed, double balls);
@@ -34,6 +34,9 @@ void spit(double speedRight, double speedLeft);
 void forwardPIDLight(double target, double headingVal, double counterThresh, double accuracy);
 void goalScore1();
 void leftTurn(double target, double counterThresh, double accuracy, double maxSpeed, double Speed);
+void createBallCountTask();
+void stopBallCountTask();
+
 
 
 #endif
