@@ -260,11 +260,15 @@ void forwardPID(double target, double headingVal, double counterThresh, double a
   double kD = 0.3;
   double kDAngle = 6;
 
-  double error = 0;
+  double errorRight = 0;
+  double errorLeft = 0;
   double errorInertial = 0;
-  double totalError = 0;
-  double prevError = 0;
-  double derivative;
+  double totalErrorRight = 0;
+  double totalErrorLeft = 0;
+  double prevErrorRight = 0;
+  double prevErrorLeft = 0;
+  double derivativeRight = 0;
+  double derivativeLeft = 0;
   double counter = 0;
   double derivativeInertial = 0;
   double limit = 0;
@@ -272,24 +276,28 @@ void forwardPID(double target, double headingVal, double counterThresh, double a
   // Resets the sensor values and then sets the current sensor values to the
   // sensors
   reset();
-  double trackingWheel = ((fabs(tracker2.rotation(deg))+(fabs(tracker2.rotation(deg))))/2);
+  double trackingWheelRight = fabs(tracker2.rotation(deg));
+  double trackingWheelLeft = fabs(tracker.rotation(deg));
   errorInertial = prevErrorInertial;
 
 
   while (counter < counterThresh) {
     //Update sensor values
     
-    trackingWheel = ((fabs(tracker2.rotation(deg))+(fabs(tracker2.rotation(deg))))/2);
+    trackingWheelRight = fabs(tracker2.rotation(deg));
+    trackingWheelLeft = fabs(tracker.rotation(deg));
     errorInertial = headingVal - inertial_gyro.rotation(degrees);
 
     // Update the limit
     limit += 7;
 
     // Proportional
-    error = target - trackingWheel;
+    errorLeft = target - trackingWheelRight;
+    errorRight = target = trackingWheelLeft;
 
     // Integral
-    totalError += error;
+    totalErrorRight += errorRight;
+    totalErrorLeft += errorLeft;
 
     Brain.Screen.setCursor(1, 1);
     Brain.Screen.print("Line:");
@@ -297,16 +305,28 @@ void forwardPID(double target, double headingVal, double counterThresh, double a
     Brain.Screen.print(ballDetector1.value(pct));
 
     // introduces I term when needed
-    if (error > 150) {
-      totalError = 0;
+
+    if (errorRight > 150) {
+      totalErrorLeft = 0;
     }
 
-    if (fabs(error) < 150) {
-      totalError = 20;
+    if (fabs(errorRight) < 150) {
+      totalErrorLeft = 20;
     }
 
     // Derivative
-    derivative = error - prevError;
+    derivativeRight = errorRight - prevErrorRight;
+
+    if (errorLeft > 150) {
+      totalErrorLeft = 0;
+    }
+
+    if (fabs(errorLeft) < 150) {
+      totalErrorLeft = 20;
+    }
+
+    // Derivative
+    derivativeLeft = errorLeft - prevErrorLeft;
 
     // Derivative Inertial
     derivativeInertial = errorInertial - prevErrorInertial;
@@ -314,51 +334,53 @@ void forwardPID(double target, double headingVal, double counterThresh, double a
    
 
     // Find the speed of chassis based of the sum of the constants
-    double motorPower = (kP * error) + (kI * totalError) + (kD * derivative);
+    double motorPowerRight = (kP * errorRight) + (kI * totalErrorRight) + (kD * derivativeRight);
+    double motorPowerLeft = (kP * errorLeft) + (kI * totalErrorLeft) + (kD * derivativeLeft);
     double heading = (kPAngle * errorInertial) + (kDAngle * derivativeInertial);
 
 
     // If the motorPower is larger then the limit, the motor power will equal
 
     // the limit
-    if (limit < motorPower) {
-      motorPower = limit;
+    if (limit < motorPowerRight) {
+      motorPowerRight = limit;
     }
  
-    if (fabs(motorPower) < 10) {
-      motorPower = 10;
+    if (fabs(motorPowerRight) < 10) {
+      motorPowerRight = 10;
     }
 
-   /* if (motorPower > 90) {
-      motorPower = 90;
+    if (limit < motorPowerRight) {
+      motorPowerRight = limit;
     }
-*/
-    Brain.Screen.setCursor(3, 1);
-    Brain.Screen.print("Power:");
-    Brain.Screen.setCursor(3, 14);
-    Brain.Screen.print(motorPower);
-
-    Brain.Screen.setCursor(4, 1);
-    Brain.Screen.print("Tracker:");
-    Brain.Screen.setCursor(4, 14);
-    Brain.Screen.print(trackingWheel);
+ 
+    if (fabs(motorPowerLeft) < 10) {
+      motorPowerLeft = 10;
+    }
 
     // Sets the speed of the drive
-    FL.spin(directionType::rev, 110 * (motorPower + (motorPower / 90 * heading)),
+    FL.spin(directionType::rev, 110 * (motorPowerLeft + (motorPowerLeft / 90 * heading)),
             voltageUnits::mV);
-    BL.spin(directionType::rev, 110 * (motorPower + (motorPower / 90 * heading)),
+    BL.spin(directionType::rev, 110 * (motorPowerLeft + (motorPowerLeft / 90 * heading)),
             voltageUnits::mV);
-    FR.spin(directionType::rev, 110 * (motorPower - (motorPower / 90 * heading)),
+    FR.spin(directionType::rev, 110 * (motorPowerRight - (motorPowerRight / 90 * heading)),
             voltageUnits::mV);
-    BR.spin(directionType::rev, 110 * (motorPower - (motorPower / 90 * heading)),
+    BR.spin(directionType::rev, 110 * (motorPowerRight - (motorPowerRight / 90 * heading)),
             voltageUnits::mV);
 
-    prevError = error;
+    prevErrorRight = errorRight;
+    prevErrorLeft = errorLeft;
     prevErrorInertial = errorInertial;
-    if (fabs(error) <= accuracy) {
+    if (fabs(errorRight) <= accuracy) {
       counter += 1;
     }
-    if (fabs(error) >= accuracy) {
+    if (fabs(errorRight) >= accuracy) {
+      counter = 0;
+    }
+    if (fabs(errorLeft) <= accuracy) {
+      counter += 1;
+    }
+    if (fabs(errorLeft) >= accuracy) {
       counter = 0;
     }
 
