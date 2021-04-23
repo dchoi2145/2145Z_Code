@@ -228,7 +228,7 @@ void setCoast() {
   BL.stop(coast);
   BR.stop(coast);
   Conveyor1.stop(coast);
-  Conveyor2.stop(coast);
+  Conveyor2.stop(coast); 
 }
 void setHold() {
   FL.stop(hold);
@@ -269,7 +269,8 @@ void forwardPID(double target, double headingVal, double counterThresh, double a
   double prevErrorLeft = 0;
   double derivativeRight = 0;
   double derivativeLeft = 0;
-  double counter = 0;
+  double counterLeft = 0;
+  double counterRight = 0;
   double derivativeInertial = 0;
   double limit = 0;
 
@@ -281,7 +282,7 @@ void forwardPID(double target, double headingVal, double counterThresh, double a
   errorInertial = prevErrorInertial;
 
 
-  while (counter < counterThresh) {
+  while (counterLeft < counterThresh || counterRight < counterThresh) {
     //Update sensor values
     
     trackingWheelRight = fabs(tracker2.rotation(deg));
@@ -293,7 +294,7 @@ void forwardPID(double target, double headingVal, double counterThresh, double a
 
     // Proportional
     errorLeft = target - trackingWheelRight;
-    errorRight = target = trackingWheelLeft;
+    errorRight = target - trackingWheelLeft;
 
     // Integral
     totalErrorRight += errorRight;
@@ -372,16 +373,16 @@ void forwardPID(double target, double headingVal, double counterThresh, double a
     prevErrorLeft = errorLeft;
     prevErrorInertial = errorInertial;
     if (fabs(errorRight) <= accuracy) {
-      counter += 1;
+      counterRight += 1;
     }
     if (fabs(errorRight) >= accuracy) {
-      counter = 0;
+      counterRight = 0;
     }
     if (fabs(errorLeft) <= accuracy) {
-      counter += 1;
+      counterLeft += 1;
     }
     if (fabs(errorLeft) >= accuracy) {
-      counter = 0;
+      counterLeft = 0;
     }
 
     
