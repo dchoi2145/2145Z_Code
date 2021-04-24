@@ -27,22 +27,23 @@ void pre_auton(void) {
  
 // auton goes in here
 void autonomous(void) {
-  backwardPID(1500,0,3,30);
- /* rollerSpeed(100);
-  forwardPID(1530,0,3,30);
+  rollerSpeed(100);
+  task::sleep(1000);
+  forwardPID(1730,0,3,30);
   task::sleep(300);
-  backwardPID(850,-20,3,30);
+  backwardPID(1250,0,3,30);
   rightPID(45,3,1,90,1.3,.05,5);
   rollerSpeed(0);
-  forwardPID(1300,45,3,30);
+  forwardPID(1400,45,3,30);
   task::sleep(700);
-  forwardSpeed(1);
+  forwardSpeed(10);
   task::sleep(1000);
   allSpin(100);
   rollerSpeed(0);
   task::sleep(1000);
   allSpin(0);
-  backwardPID(1000,45,3,30);*/
+  task::sleep(6400);
+  backwardPID(1000,45,3,30);
 
 
 

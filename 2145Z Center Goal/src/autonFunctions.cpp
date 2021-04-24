@@ -284,8 +284,13 @@ void forwardPID(double target, double headingVal, double counterThresh, double a
   double derivativeLeft = 0;
   double counterLeft = 0;
   double counterRight = 0;
+  double counterLeft2 = 0;
+  double counterRight2 = 0;
   double derivativeInertial = 0;
   double limit = 0;
+  double accuracy2 = 60;
+  double counterThresh2 = 500;
+  bool run = true;
 
   // Resets the sensor values and then sets the current sensor values to the
   // sensors
@@ -295,7 +300,7 @@ void forwardPID(double target, double headingVal, double counterThresh, double a
   errorInertial = prevErrorInertial;
 
 
-  while (counterLeft < counterThresh || counterRight < counterThresh) {//counterLeft < counterThresh || counterRight < counterThresh
+  while (run) {
     //Update sensor values
     
     trackingWheelRight = fabs(tracker.rotation(deg));
@@ -390,17 +395,39 @@ void forwardPID(double target, double headingVal, double counterThresh, double a
     prevErrorRight = errorRight;
     prevErrorLeft = errorLeft;
     prevErrorInertial = errorInertial;
+
     if (fabs(errorRight) <= accuracy) {
-      counterRight += 1;
+      counterRight += 10;
     }
     if (fabs(errorRight) >= accuracy) {
       counterRight = 0;
     }
     if (fabs(errorLeft) <= accuracy) {
-      counterLeft += 1;
+      counterLeft += 10;
     }
     if (fabs(errorLeft) >= accuracy) {
       counterLeft = 0;
+    }
+
+    if (fabs(errorRight) <= accuracy2) {
+      counterRight2 += 10;
+    }
+    if (fabs(errorRight) >= accuracy2) {
+      counterRight2 = 0;
+    }
+    if (fabs(errorLeft) <= accuracy2) {
+      counterLeft2 += 10;
+    }
+    if (fabs(errorLeft) >= accuracy2) {
+      counterLeft2 = 0;
+    }
+
+    if (counterLeft2 > counterThresh2 && counterRight2 > counterThresh2){
+      run = false;
+    }
+
+    if (counterLeft > counterThresh && counterRight > counterThresh) {
+      run = false;
     }
 
     
@@ -438,7 +465,7 @@ void backwardPID(double target, double headingVal, double counterThresh, double 
   double counterRight2 = 0;
   double derivativeInertial = 0;
   double limit = 0;
-  double accuracy2 = 500;
+  double accuracy2 = 60;
   double counterThresh2 = 500;
   bool run = true;
 
@@ -547,36 +574,36 @@ void backwardPID(double target, double headingVal, double counterThresh, double 
     prevErrorInertial = errorInertial;
 
     if (fabs(errorRight) <= accuracy) {
-      counterRight += 1;
+      counterRight += 10;
     }
     if (fabs(errorRight) >= accuracy) {
       counterRight = 0;
     }
     if (fabs(errorLeft) <= accuracy) {
-      counterLeft += 1;
+      counterLeft += 10;
     }
     if (fabs(errorLeft) >= accuracy) {
       counterLeft = 0;
     }
 
     if (fabs(errorRight) <= accuracy2) {
-      counterRight2 += 1;
+      counterRight2 += 10;
     }
     if (fabs(errorRight) >= accuracy2) {
       counterRight2 = 0;
     }
     if (fabs(errorLeft) <= accuracy2) {
-      counterLeft2 += 1;
+      counterLeft2 += 10;
     }
     if (fabs(errorLeft) >= accuracy2) {
       counterLeft2 = 0;
     }
 
-    if (counterLeft2 < counterThresh2 && counterRight2 < counterThresh2){
+    if (counterLeft2 > counterThresh2 && counterRight2 > counterThresh2){
       run = false;
     }
 
-    if (counterLeft < counterThresh && counterRight < counterThresh) {
+    if (counterLeft > counterThresh && counterRight > counterThresh) {
       run = false;
     }
 
@@ -606,6 +633,12 @@ void rightPID(double target, double counterThresh, double accuracy, double maxSp
   double prevError = 0;
   double derivative;
   double limit = 0;
+  bool run = true;
+  double accuracy2 = 2;
+  double counterThresh2 = 500;
+
+
+
 
   // Resets the sensor values and then sets the current sensor values to the
   // sensors
@@ -615,7 +648,7 @@ void rightPID(double target, double counterThresh, double accuracy, double maxSp
   // target = target - targetError;
 
   //while (counter < counterThresh) {
-  while (counter < counterThresh) {
+  while (run) {
 
     // Update sensor values
     // target = prevTarget;
@@ -670,20 +703,39 @@ void rightPID(double target, double counterThresh, double accuracy, double maxSp
     BR.spin(directionType::fwd, motorPower * 120, voltageUnits::mV);
 
     prevError = error;
-    printInet();
-    Brain.Screen.setCursor(3, 1);
-    Brain.Screen.print("Power:");
-    Brain.Screen.setCursor(3, 14);
-    Brain.Screen.print(motorPower);
-    Brain.Screen.setCursor(2, 1);
-    Brain.Screen.print("Error:");
-    Brain.Screen.setCursor(2, 14);
-    Brain.Screen.print(error);
+    
     if (fabs(error) <= accuracy) {
-      counter += 1;
+      counter += 10;
     }
     if (fabs(error) >= accuracy) {
       counter = 0;
+    }
+    if (fabs(error) <= accuracy) {
+      counter += 10;
+    }
+    if (fabs(error) >= accuracy) {
+      counter = 0;
+    }
+
+    if (fabs(error) <= accuracy2) {
+      counter += 10;
+    }
+    if (fabs(error) >= accuracy2) {
+      counter = 0;
+    }
+    if (fabs(error) <= accuracy2) {
+      counter += 10;
+    }
+    if (fabs(error) >= accuracy2) {
+      counter = 0;
+    }
+
+    if (counter > counterThresh && counter > counterThresh){
+      run = false;
+    }
+
+    if (counter2 > counterThresh2 && counter2 > counterThresh2) {
+      run = false;
     }
      printf("errorInertial %f\n", inertial_gyro.rotation(deg));
 
@@ -712,6 +764,9 @@ void leftPID(double target, double counterThresh, double accuracy, double maxSpe
   double prevError = 0;
   double derivative;
   double limit = 0;
+  bool run = true;
+  double accuracy2 = 2;
+  double counterThresh2 = 500;
 
   // Resets the sensor values and then sets the current sensor values to the
   // sensors
@@ -720,7 +775,7 @@ void leftPID(double target, double counterThresh, double accuracy, double maxSpe
   // targetError = prevTurn - prevTarget;
   // target = target - targetError;
 
-  while (counter < counterThresh) {
+  while (run) {
 
     // Update sensor values
     // target = prevTarget;
@@ -766,20 +821,39 @@ void leftPID(double target, double counterThresh, double accuracy, double maxSpe
     BR.spin(directionType::rev, motorPower * 120, voltageUnits::mV);
 
     prevError = error;
-    printInet();
-    Brain.Screen.setCursor(3, 1);
-    Brain.Screen.print("Power:");
-    Brain.Screen.setCursor(3, 14);
-    Brain.Screen.print(motorPower);
-    Brain.Screen.setCursor(2, 1);
-    Brain.Screen.print("Error:");
-    Brain.Screen.setCursor(2, 14);
-    Brain.Screen.print(error);
+
     if (fabs(error) <= accuracy) {
-      counter += 1;
+      counter += 10;
     }
     if (fabs(error) >= accuracy) {
       counter = 0;
+    }
+    if (fabs(error) <= accuracy) {
+      counter += 10;
+    }
+    if (fabs(error) >= accuracy) {
+      counter = 0;
+    }
+
+    if (fabs(error) <= accuracy2) {
+      counter += 10;
+    }
+    if (fabs(error) >= accuracy2) {
+      counter = 0;
+    }
+    if (fabs(error) <= accuracy2) {
+      counter += 10;
+    }
+    if (fabs(error) >= accuracy2) {
+      counter = 0;
+    }
+
+    if (counter > counterThresh && counter > counterThresh){
+      run = false;
+    }
+
+    if (counter2 > counterThresh2 && counter2 > counterThresh2) {
+      run = false;
     }
 
     task::sleep(10);
