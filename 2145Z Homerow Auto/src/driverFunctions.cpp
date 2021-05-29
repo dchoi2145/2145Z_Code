@@ -62,9 +62,9 @@ int chassisMovement(){
     
       else {
         Conveyor1.spin(fwd, 0, pct);
-        Conveyor2.spin(fwd, 0, pct);
+        Conveyor2.spin(reverse, 0, pct);
         Conveyor1.stop(coast);
-        Conveyor2.stop(coast);
+        Conveyor2.stop(hold);
     }
   
     task::sleep(10);

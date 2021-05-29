@@ -118,6 +118,7 @@ double counter = 0;
 double counter2 = 0;
 bool ball = false;
 bool ball2 = false;
+int stuck = 0;
 
 int ballCycle(){
   while(true){
@@ -151,7 +152,8 @@ void goalScore(double Balls, double top){
   counter = 0;
   counter2 = 0;
 
-  while(Balls > counter){
+  while(Balls > counter && stuck <= 300){
+    stuck++;
     printf("counter%f\n", counter);
 
     Conveyor1.spin(fwd, 100, pct);
@@ -291,6 +293,8 @@ void forwardPID(double target, double headingVal, double counterThresh, double a
   double limit = 0;
   double accuracy2 = 180;
   double counterThresh2 = 300;
+  double prevTrackingLeft = 0;
+  double counterrr = 0;
   bool run = true;
 
   // Resets the sensor values and then sets the current sensor values to the
@@ -383,6 +387,12 @@ void forwardPID(double target, double headingVal, double counterThresh, double a
       motorPowerLeft = 10;
     }
 
+    if(trackingWheelLeft - prevTrackingLeft < 30){
+      counterrr++;
+    }
+    if(counterrr == 100){
+      run = false;
+    }
     // Sets the speed of the drive
     FL.spin(directionType::rev, 110 * (motorPowerLeft + heading),
             voltageUnits::mV);
@@ -430,6 +440,7 @@ void forwardPID(double target, double headingVal, double counterThresh, double a
     if (counterLeft > counterThresh && counterRight > counterThresh) {
       run = false;
     }
+    prevTrackingLeft = trackingWheelLeft;
 
     
 
@@ -1104,8 +1115,9 @@ void forwardPIDcurve(double target, double headingVal, double counterThresh, dou
   double counter = 0;
   double derivativeInertial = 0;
   double limit = 0;
+  double counterrr = 0;
   double counterBump = 0;
-  
+  double prevTrackingLeft = 0;
   // Resets the sensor values and then sets the current sensor values to the
   // sensors
   reset();
@@ -1164,6 +1176,15 @@ void forwardPIDcurve(double target, double headingVal, double counterThresh, dou
     if (fabs(motorPower) < 10) {
       motorPower = 10;
     }
+    if(trackingWheel - prevTrackingLeft < 30){
+      counterrr++;
+    }
+    if(counterrr == 100){
+      counterBump++;
+    }
+    /*if(derivative <30){
+      counterBump ++;
+    }*/
 
    /* if (motorPower > 90) {
       motorPower = 90;
@@ -1180,9 +1201,9 @@ void forwardPIDcurve(double target, double headingVal, double counterThresh, dou
     Brain.Screen.print(trackingWheel);
 
     // Sets the speed of the drive
-    FL.spin(directionType::rev, 110 * ((motorPower + (motorPower / 90))/4),
+    FL.spin(directionType::rev, 110 * ((motorPower + (motorPower / 90))/4.5),
             voltageUnits::mV);
-    BL.spin(directionType::rev, 110 * ((motorPower + (motorPower / 90))/4),
+    BL.spin(directionType::rev, 110 * ((motorPower + (motorPower / 90))/4.5),
             voltageUnits::mV);
     FR.spin(directionType::rev, 110 * (motorPower - (motorPower / 90)),
             voltageUnits::mV);
@@ -1198,7 +1219,7 @@ void forwardPIDcurve(double target, double headingVal, double counterThresh, dou
       counter = 0;
     }
 
-    
+    prevTrackingLeft = trackingWheel;
 
     task::sleep(10);
   }
